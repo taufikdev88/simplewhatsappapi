@@ -1,0 +1,16 @@
+{
+  "name": "whatsappapi",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "taufikdev88",
+  "license": "ISC",
+  "dependencies": {
+    "@adiwajshing/baileys": "^3.5.3",
+    "express": "^4.17.3",
+    "socket.io": "^4.4.1"
+  }
+}
