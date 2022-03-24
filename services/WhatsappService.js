@@ -99,6 +99,16 @@ class WhatsappService {
             qrcode: this.qrcode
         };
     }
+
+    Logout(){
+        if (this.conn.state != "open"){
+            return;
+        }
+
+        this.conn.logout();
+        this.conn.clearAuthInfo();
+        fs.existsSync(SESSION_FILE_PATH) && fs.unlink(SESSION_FILE_PATH);
+    }
 };
 
 module.exports = {

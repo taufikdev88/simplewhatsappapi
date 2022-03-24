@@ -44,6 +44,15 @@ app.post('/message', (req, res) => {
     });
 });
 
+app.post('/logout', (req, res) => {
+    wa.Logout();
+    
+    res.send({ 
+        status: "success",
+        errors: null
+     });
+});
+
 // run express
 const apiserver = app.listen(8080, function(){
     var host = apiserver.address().address
