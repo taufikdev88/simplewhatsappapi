@@ -3,7 +3,7 @@ const fs = require("fs");
 const { FormatToIndonesian, FormatToWhatsappJid } = require('../helper/PhoneNumberFormatter');
 const { ParseTextFromMessage } = require('../helper/MessageParser');
 
-const SESSION_FILE_PATH = './session.json';
+const SESSION_FILE_PATH = './data/session.json';
 
 class WhatsappService {
     // siapkan object WAConnection
@@ -30,7 +30,7 @@ class WhatsappService {
                 this.conn.close();
                 this.conn.clearAuthInfo();
                 fs.unlinkSync(SESSION_FILE_PATH);
-                ConnectToWhatsApp();
+                this.ConnectToWhatsApp();
             }
         });
         this.conn.on('qr', qr => {
@@ -79,8 +79,10 @@ class WhatsappService {
         if (this.conn.state != "open"){
             return;
         }
-    
+        console.log('Sending To:', phoneNumber, 'with message:', message);
+
         const jid = FormatToWhatsappJid(phoneNumber);
+        console.log('Formatted jid to:', jid);
         await this.conn.sendMessage(jid, message, MessageType.text);
     }
 

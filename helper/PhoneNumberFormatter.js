@@ -7,6 +7,10 @@ const FormatToIndonesian = function (number){
 };
 
 const FormatToWhatsappJid = function (number){
+    number = number.replace(/\D/g, '');
+    if (number.startsWith('+')){
+        number = number.substring(1);
+    }
     if (number.startsWith('08')){
         number = '62' + number.substring(1);
     }

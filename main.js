@@ -26,7 +26,7 @@ app.get('/status', (req, res) => {
 app.post('/message', (req, res) => {
     validator(req.body, MessageWrite, {}, (error, isValid) => {
         if (!isValid){
-            res.send({
+            res.status(400).send({
                 status: "failed",
                 errors: error.errors
             });
@@ -46,7 +46,7 @@ app.post('/message', (req, res) => {
 
 app.post('/logout', (req, res) => {
     wa.Logout();
-    
+
     res.send({ 
         status: "success",
         errors: null
@@ -54,7 +54,7 @@ app.post('/logout', (req, res) => {
 });
 
 // run express
-const apiserver = app.listen(8080, function(){
+const apiserver = app.listen(80, function(){
     var host = apiserver.address().address
     var port = apiserver.address().port
     
