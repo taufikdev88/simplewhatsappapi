@@ -1,10 +1,9 @@
 const { WhatsappService } = require('./services/WhatsappService');
 const express = require('express');
+const { MessageWrite } = require('./rules/MessageWrite');
+const validator = require('./helper/Validator');
 
 const app = express();
-var server = require('http').createServer(app);
-var io = require('socket.io')(server);
-
 const wa = new WhatsappService();
 
 wa.ConnectToWhatsApp()
@@ -12,25 +11,37 @@ wa.ConnectToWhatsApp()
         console.log("unexpected error: " + err);
     });
 
-// configure socket connection
-io.on('connection', client => {
-    console.log('client connected');
+// configure http connection
+app.use(express.json()) 
 
-    client.on('ready', () => {
-        console.log('ready');
-    });
-    client.on('join', data => {
-        console.log(data);
-    });
-    client.on('message', message => {
-        console.log(message);
-    });
+app.get('/', (req, res) => {
+    res.send('Hello, This is simple whatsapp server for internal use fast and reliable.');
 });
 
-// configure http connection
-app.get('/', (req, res) => { 
-    wa.SendWhatsappSimpleMessage("081977321571", "Sudah Menyala Yei");
-    res.send('Hello World');
+app.get('/status', (req, res) => {
+    wa.ConnectToWhatsApp();
+    res.send(wa.GetStatus());
+});
+
+app.post('/message', (req, res) => {
+    validator(req.body, MessageWrite, {}, (error, isValid) => {
+        if (!isValid){
+            res.send({
+                status: "failed",
+                errors: error.errors
+            });
+        } else {
+            const message = req.body.message;
+            const phoneNumber = req.body.phoneNumber;
+
+            wa.SendWhatsappSimpleMessage(phoneNumber, message);
+
+            res.send({ 
+               status: "success",
+               errors: null
+            });
+        }
+    });
 });
 
 // run express

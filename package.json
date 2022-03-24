@@ -11,6 +11,7 @@
   "dependencies": {
     "@adiwajshing/baileys": "^3.5.3",
     "express": "^4.17.3",
-    "socket.io": "^4.4.1"
+    "socket.io": "^4.4.1",
+    "validatorjs": "^3.22.1"
   }
 }

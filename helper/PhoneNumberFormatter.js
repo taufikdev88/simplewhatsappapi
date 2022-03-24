@@ -1,7 +1,7 @@
 const FormatToIndonesian = function (number){
     number = number.replace(/\D/g, '');
     if (number.startsWith('62')){
-        number = '0' + number.substring(1);
+        number = '0' + number.substring(2);
     }
     return number;
 };
