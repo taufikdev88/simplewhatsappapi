@@ -48,7 +48,7 @@ export class WhatsappService {
             } else if(connection === 'open') {
                 // saat connection open, ambil nomor hp yang sedang terkoneksi
                 console.log('opened connection')
-                this.phoneNumber = FormatToIndonesian(this.sock.user.id);
+                this.phoneNumber = FormatToIndonesian(state.creds.me?.id as string);
                 this.qrcode = "";
             }
 
