@@ -1,4 +1,8 @@
 const FormatToIndonesian = function (number: string){
+    if(typeof(number) == 'undefined' || number == ''){
+        return "";
+    }
+
     number = number.replace(/\D/g, '');
     if (number.startsWith('62')){
         number = '0' + number.substring(2);
@@ -7,6 +11,10 @@ const FormatToIndonesian = function (number: string){
 };
 
 const FormatToWhatsappJid = function (number: string){
+    if(typeof(number) == 'undefined' || number == ''){
+        return "";
+    }
+    
     number = number.replace(/\D/g, '');
     if (number.startsWith('+')){
         number = number.substring(1);
