@@ -1,9 +1,7 @@
-const Validator = require('validatorjs');
+import Validator from 'validatorjs';
 
-const validator = (body, rules, customMessage, callback) => {
+export const validator = (body: any, rules: any, customMessage: any, callback: any) => {
   const validation = new Validator(body, rules, customMessage);
   validation.passes(() => callback(null, true));
   validation.fails(() => callback(validation.errors, false));
 };
-
-module.exports = validator;

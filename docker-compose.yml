@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   whatsapp: 
-    image: taufikdev88/simplewhatsappapi:1.0.2
+    image: taufikdev88/simplewhatsappapi:2.0.0
     build:
       context: .
       dockerfile: Dockerfile
