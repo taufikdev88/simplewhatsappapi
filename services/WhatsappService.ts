@@ -34,7 +34,7 @@ export class WhatsappService {
         });
         
         // autoreconnect
-        socket.ev.on('connection.update', (update) => {
+        socket.ev.on('connection.update', async (update) => {
             const { connection, lastDisconnect, isNewLogin, qr } = update;
 
             if (connection == 'close'){
@@ -43,7 +43,7 @@ export class WhatsappService {
                 console.log('connection closed due to', (lastDisconnect?.error as Boom)?.message, statusCode);
                 
                 if(statusCode !== DisconnectReason.loggedOut) {
-                    this.sock = this.CreateNewSocket();
+                    this.sock = await this.CreateNewSocket();
                 }
             } else if(connection === 'open') {
                 // saat connection open, ambil nomor hp yang sedang terkoneksi
