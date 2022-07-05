@@ -25,12 +25,7 @@ export class WhatsappService {
         var socket = makeWASocket({
             version: version,
             printQRInTerminal: true,
-            auth: state,
-            getMessage: async key => {
-                return {
-                    conversation: 'hello'
-                }
-            }
+            auth: state
         });
         
         // autoreconnect
