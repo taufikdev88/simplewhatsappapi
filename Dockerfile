@@ -17,5 +17,5 @@ RUN npm install --only=production
 FROM gcr.io/distroless/nodejs:16
 WORKDIR /app
 COPY --from=ts-remover /app ./
-USER 1000
+EXPOSE 80
 CMD ["index.js"]
