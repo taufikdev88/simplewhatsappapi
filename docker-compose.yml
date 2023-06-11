@@ -1,7 +1,7 @@
-version: '3.8'
+version: '3.9'
 services:
   whatsapp: 
-    image: taufikdev88/simplewhatsappapi:2.0.2
+    image: taufikdev88/simplewhatsappapi:${TAG:-latest}
     build:
       context: .
       dockerfile: Dockerfile
