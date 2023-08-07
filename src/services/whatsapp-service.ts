@@ -1,6 +1,6 @@
 import { Boom } from '@hapi/boom'
 import makeWASocket, { useMultiFileAuthState, DisconnectReason, fetchLatestBaileysVersion, delay, AnyMessageContent, AuthenticationState, Browsers } from "@whiskeysockets/baileys";
-import { FormatToIndonesian, FormatToWhatsappJid } from '../helper/PhoneNumberFormatter';
+import { FormatToIndonesian, FormatToWhatsappJid } from '../util/formatter';
 import * as fs from 'fs';
 
 const AUTH_FILE_LOCATION = './data/session';
