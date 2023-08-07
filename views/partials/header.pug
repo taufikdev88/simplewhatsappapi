@@ -1,8 +1,8 @@
 nav.navbar.navbar-expand-lg.navbar-light.bg-light
   .container
     a.navbar-brand(href='/')
-      i.fa.fa-cube
-      | Simple Whatsapp Api
+      i.bi.bi-hexagon-half
+      |  Simple Whatsapp Api
     button.navbar-toggler(type='button', data-toggle='collapse', data-target='.navbar-collapse')
       span.navbar-toggler-icon
 
@@ -11,5 +11,7 @@ nav.navbar.navbar-expand-lg.navbar-light.bg-light
       ul.nav.navbar-nav.mr-auto
         li.nav-item(class=(title === 'Home') ? 'active' : undefined)
           a.nav-link(href='/') Home
-        li.nav-item(class=(title === 'API Examples') ? 'active' : undefined)
+        li.nav-item(class=(title === 'Qr Code') ? 'active' : undefined)
           a.nav-link(href='/qr') Qr Code
+        li.nav-item(class=(title === 'Send Message') ? 'active' : undefined)
+          a.nav-link(href='/message') Send Message

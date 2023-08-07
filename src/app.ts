@@ -50,6 +50,7 @@ app.use(
  * Primary app routes.
  */
 app.get('/', homeController.index);
+app.get('/message', messageController.getMessageForm);
 app.post('/message', exposeWhatsappService, messageController.postMessage);
 app.get('/qr', exposeWhatsappService, qrController.getQrCode);
 app.get('/status', exposeWhatsappService, statusController.getStatus);

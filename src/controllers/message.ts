@@ -5,6 +5,16 @@ import { check, validationResult } from 'express-validator';
 import { StatusCodes, ReasonPhrases } from 'http-status-codes';
 
 /**
+ * Get Message Form
+ * @route GET /message
+ */
+export const getMessageForm = (req: Request, res: Response) => {
+  return res.render('message', {
+    title: 'Send Message'
+  });
+}
+
+/**
  * Send Message
  * @route POST /message
  */

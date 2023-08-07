@@ -1,20 +1,9 @@
-@import "themes/default/variables";
-
-@import "lib/bootstrap/bootstrap";
-@import "lib/font-awesome/font-awesome";
-
-@import "themes/default/default";
-
-// Scaffolding
-// -------------------------
-
 html {
   position: relative;
   min-height: 100%;
 }
 
 body {
-  padding-top: 80px;
   margin-bottom: 75px;
 }
 
@@ -41,7 +30,7 @@ textarea {
 .navbar-nav img {
   width: 30px;
   height: 30px;
-  margin: -15px 15px -15px;
+  margin: -15px 0px -15px;
 }
 
 // Alerts
@@ -58,11 +47,4 @@ textarea {
   padding: 0;
   border-radius: 0;
   box-shadow: 0 0 5px #ccc, inset 0 0 0 #000;
-}
-
-// Font Icons
-// -------------------------
-
-.fa {
-  margin-right: 6px;
 }
