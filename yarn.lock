@@ -14,6 +14,11 @@
   dependencies:
     "@jridgewell/trace-mapping" "0.3.9"
 
+"@eshaz/web-worker@1.2.1":
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/@eshaz/web-worker/-/web-worker-1.2.1.tgz#834385830529582589e9790350beb24bf3ac8018"
+  integrity sha512-v5AKAVtM0toVD2rDCGjzhySWlXG/sG5HVialdzrxFKTAnFZNCjQelX0n2tPK0tE86jf4s3hpWlpRtOh8OObktg==
+
 "@hapi/boom@^10.0.0":
   version "10.0.1"
   resolved "https://registry.yarnpkg.com/@hapi/boom/-/boom-10.0.1.tgz#ebb14688275ae150aa6af788dbe482e6a6062685"
@@ -114,6 +119,18 @@
   resolved "https://registry.yarnpkg.com/@socket.io/component-emitter/-/component-emitter-3.1.0.tgz#96116f2a912e0c02817345b3c10751069920d553"
   integrity sha512-+9jVqKhRSpsc591z5vX+X5Yyw+he/HCB4iQ/RYxw35CEPaY1gnsNE43nf9n9AaYjAQrTiI/mOwKUKdUs9vf7Xg==
 
+"@thi.ng/bitstream@^2.2.12":
+  version "2.2.23"
+  resolved "https://registry.yarnpkg.com/@thi.ng/bitstream/-/bitstream-2.2.23.tgz#65c0732a0d4bfa8784aa283186f3b510f3d0600c"
+  integrity sha512-QeE4smuo0ymmPyWzs3MtwL6DCRhqKWvsliIvoHs+KuqgDSp9MEYKCKIwlTePwCHRUelAWGs5iwfbcYHrjy9ZTA==
+  dependencies:
+    "@thi.ng/errors" "^2.3.0"
+
+"@thi.ng/errors@^2.3.0":
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/@thi.ng/errors/-/errors-2.3.0.tgz#f3ba7517f9376dbc32db71714971ea44f9110909"
+  integrity sha512-gbOskPQfuZ9logBFFg2yjT8kiKK+YYOVZhChanwIOGvIXwGE+H/IdJt5irXkafzauRiqc4tI6mtkzeA4kDfYKg==
+
 "@tokenizer/token@^0.3.0":
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/@tokenizer/token/-/token-0.3.0.tgz#fe98a93fe789247e998c75e74e9c7c63217aa276"
@@ -201,10 +218,15 @@
   resolved "https://registry.yarnpkg.com/@types/mime/-/mime-1.3.2.tgz#93e25bf9ee75fe0fd80b594bc4feb0e862111b5a"
   integrity sha512-YATxVxgRqNH6nHEIsvg6k2Boc1JHI9ZbH5iWFFv/MTkchz3b1ieGDa5T0a9RznNdI0KhVbdbWSN+KWWrQZRxTw==
 
-"@types/node@*", "@types/node@>=10.0.0", "@types/node@>=13.7.0":
+"@types/node@*", "@types/node@>=10.0.0":
   version "20.3.0"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-20.3.0.tgz#719498898d5defab83c3560f45d8498f58d11938"
   integrity sha512-cumHmIAf6On83X7yP+LrsEyUOf/YlociZelmpRYaGFydoaPdxdt80MAbu6vWerQT2COCp2nPvHdsbD7tHn/YlQ==
+
+"@types/node@>=13.7.0":
+  version "20.4.8"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-20.4.8.tgz#b5dda19adaa473a9bf0ab5cbd8f30ec7d43f5c85"
+  integrity sha512-0mHckf6D2DiIAzh8fM8f3HQCvMKDpK94YQ0DSVkfWTG9BZleYIWudw9cJxX8oCk9bM+vAkDyujDV6dmKHbvQpg==
 
 "@types/node@^10.1.0":
   version "10.17.60"
@@ -261,22 +283,48 @@
   dependencies:
     "@types/node" "*"
 
-"@whiskeysockets/baileys@^6.2.1":
-  version "6.2.1"
-  resolved "https://registry.yarnpkg.com/@whiskeysockets/baileys/-/baileys-6.2.1.tgz#3828038439ea9ee840eb1ab6cecf488f813f1151"
-  integrity sha512-YI3dyxsod30nwWkldMhjFC+8qAgFe8QcKC6vZUSAV7tqrnbCCxnb0qJdBMkZ2LF2dNDPy3clFRvMR5dVGZOTxw==
+"@wasm-audio-decoders/common@9.0.1":
+  version "9.0.1"
+  resolved "https://registry.yarnpkg.com/@wasm-audio-decoders/common/-/common-9.0.1.tgz#985f35d7f216da1b0f691132c3875793cc516022"
+  integrity sha512-s4KxPsxhD6e+EtjmHPzTmKJSJTEXHGYlBzUGGLN/plV01x3RecybW73nIMtdLLXL8k/zQ8HYFcA6d9lqCJcDjQ==
   dependencies:
+    "@eshaz/web-worker" "1.2.1"
+
+"@wasm-audio-decoders/flac@^0.1.12":
+  version "0.1.13"
+  resolved "https://registry.yarnpkg.com/@wasm-audio-decoders/flac/-/flac-0.1.13.tgz#7fffe674ffccba6adf0bd6ce29ab0c7e58c034d4"
+  integrity sha512-Ah0hurb+qO3kBjuBrmOSIDqe8DWkd/g5feoyd8jjoM46l//OmVrsG9lW0rnDJAKMhyMeRuWwCy/kv/SswzrW8Q==
+  dependencies:
+    "@wasm-audio-decoders/common" "9.0.1"
+    codec-parser "2.4.3"
+
+"@wasm-audio-decoders/ogg-vorbis@^0.1.7":
+  version "0.1.8"
+  resolved "https://registry.yarnpkg.com/@wasm-audio-decoders/ogg-vorbis/-/ogg-vorbis-0.1.8.tgz#031adbb47afba13eec3828512b365b901f4063e0"
+  integrity sha512-YwPSxN1xqGrVpON0OvUHwBnboKMA0P7n08j2K2SgZr5MI6ODWp2viW66XLL+gpNZBqRJhw+RdnyTUkZiZ70JOA==
+  dependencies:
+    "@wasm-audio-decoders/common" "9.0.1"
+    codec-parser "2.4.3"
+
+"@whiskeysockets/baileys@^6.4.0":
+  version "6.4.0"
+  resolved "https://registry.yarnpkg.com/@whiskeysockets/baileys/-/baileys-6.4.0.tgz#7effbec2d0d7529ce4ee338024fb65fb28b87089"
+  integrity sha512-SdCoVpILWX7z2WEe40BwNjMqpI6Guf0gbG80NNfsJBcRcDQIS9pkmazIhTvNKytWZm7BFZR+QNKcBUxdPqdLsQ==
+  dependencies:
+    "@adiwajshing/keyed-db" "^0.2.4"
     "@hapi/boom" "^9.1.3"
+    audio-decode "^2.1.3"
     axios "^1.3.3"
+    cache-manager "^5.2.2"
     futoin-hkdf "^1.5.1"
     libphonenumber-js "^1.10.20"
-    libsignal "https://github.com/adiwajshing/libsignal-node.git"
+    libsignal "github:adiwajshing/libsignal-node"
     music-metadata "^7.12.3"
     node-cache "^5.1.2"
     pino "^7.0.0"
     protobufjs "^6.11.3"
     uuid "^9.0.0"
-    ws "^8.0.0"
+    ws "^8.13.0"
 
 abbrev@1:
   version "1.1.1"
@@ -341,6 +389,30 @@ atomic-sleep@^1.0.0:
   resolved "https://registry.yarnpkg.com/atomic-sleep/-/atomic-sleep-1.0.0.tgz#eb85b77a601fc932cfe432c5acd364a9e2c9075b"
   integrity sha512-kNOjDqAh7px0XWNI+4QbzoiR/nTkHAWNud2uvnJquD1/x5a7EQZMJT0AczqK0Qn67oY/TTQ1LbUKajZpp3I9tQ==
 
+audio-buffer@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/audio-buffer/-/audio-buffer-5.0.0.tgz#92129984ebdbb8ad1c4ec6fd81525a0e0a29e99e"
+  integrity sha512-gsDyj1wwUp8u7NBB+eW6yhLb9ICf+0eBmDX8NGaAS00w8/fLqFdxUlL5Ge/U8kB64DlQhdonxYC59dXy1J7H/w==
+
+audio-decode@^2.1.3:
+  version "2.1.4"
+  resolved "https://registry.yarnpkg.com/audio-decode/-/audio-decode-2.1.4.tgz#86e7eb2ce62661037949ce19989e5464ac1e7a7d"
+  integrity sha512-i1KTHqBXcU3vVCPXfp4zZCaXsLYyO4CNbt6JhvV1so/PpOpBnIXNFgHEq0bWNsroUV/J6i2/Yck0QhoaCzGh+A==
+  dependencies:
+    "@wasm-audio-decoders/flac" "^0.1.12"
+    "@wasm-audio-decoders/ogg-vorbis" "^0.1.7"
+    audio-buffer "^5.0.0"
+    audio-type "^2.2.0"
+    mpg123-decoder "^0.4.8"
+    node-wav "^0.0.2"
+    ogg-opus-decoder "^1.6.4"
+    qoa-format "^1.0.0"
+
+audio-type@^2.2.0:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/audio-type/-/audio-type-2.2.1.tgz#5ceae0b0b3cf3b1e117edabb9e5332eaf3bd4f25"
+  integrity sha512-En9AY6EG1qYqEy5L/quryzbA4akBpJrnBZNxeKTqGHC2xT9Qc4aZ8b7CcbOMFTTc/MGdoNyp+SN4zInZNKxMYA==
+
 axios@^1.3.3:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/axios/-/axios-1.4.0.tgz#38a7bf1224cd308de271146038b551d725f0be1f"
@@ -403,6 +475,14 @@ bytes@3.1.2:
   resolved "https://registry.yarnpkg.com/bytes/-/bytes-3.1.2.tgz#8b0beeb98605adf1b128fa4386403c009e0221a5"
   integrity sha512-/Nf7TyzTx6S3yRJObOAV7956r8cr2+Oj8AC5dt8wSP3BQAoeX58NoHyCU8P8zGkNXStjTSi6fzO6F0pBdcYbEg==
 
+cache-manager@^5.2.2:
+  version "5.2.3"
+  resolved "https://registry.yarnpkg.com/cache-manager/-/cache-manager-5.2.3.tgz#b6a8b4469c57fdfdae1deed7f81ea9e057c7eade"
+  integrity sha512-9OErI8fksFkxAMJ8Mco0aiZSdphyd90HcKiOMJQncSlU1yq/9lHHxrT8PDayxrmr9IIIZPOAEfXuGSD7g29uog==
+  dependencies:
+    lodash.clonedeep "^4.5.0"
+    lru-cache "^9.1.2"
+
 call-bind@^1.0.0:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/call-bind/-/call-bind-1.0.2.tgz#b1d4e89e688119c3c9a903ad30abb2f6a919be3c"
@@ -444,6 +524,11 @@ clone@2.x:
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/clone/-/clone-2.1.2.tgz#1b7f4b9f591f1e8f83670401600345a02887435f"
   integrity sha512-3Pe/CF1Nn94hyhIYpjtiLhdCoEoz0DqQ+988E9gmeEdQZlojxnOb74wctFyuwWQHzqyf9X7C7MG8juUpqBJT8w==
+
+codec-parser@2.4.3:
+  version "2.4.3"
+  resolved "https://registry.yarnpkg.com/codec-parser/-/codec-parser-2.4.3.tgz#759b16b0db60125efcb394e7d5dc3617cc32bf27"
+  integrity sha512-3dAvFtdpxn4YLstqsB2ZiJXXNg7n1j7R5ONeDuk+2kBkb39PwrCRytOFHlSWA8q5jCjW3PumeMv9q37bFHsijg==
 
 color-convert@^2.0.1:
   version "2.0.1"
@@ -671,9 +756,9 @@ express@^4.18.1:
     vary "~1.1.2"
 
 fast-redact@^3.0.0:
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/fast-redact/-/fast-redact-3.2.0.tgz#b1e2d39bc731376d28bde844454fa23e26919987"
-  integrity sha512-zaTadChr+NekyzallAMXATXLOR8MNx3zqpZ0MUF2aGf4EathnG0f32VLODNlY8IuGY3HoRO2L6/6fSzNsLaHIw==
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/fast-redact/-/fast-redact-3.3.0.tgz#7c83ce3a7be4898241a46560d51de10f653f7634"
+  integrity sha512-6T5V1QK1u4oF+ATxs1lWUmlEk6P2T9HqJG3e2DnHOdVgZy2rFJBoEnrIedcTXlkAHU/zKC+7KETJ+KGGKwxgMQ==
 
 file-type@^16.5.4:
   version "16.5.4"
@@ -747,9 +832,9 @@ function-bind@^1.1.1:
   integrity sha512-yIovAzMX49sF8Yl58fSCWJ5svSLuaibPxXQJFLmBObTuCr0Mf1KiPopGM9NiFjiYBCbfaa2Fh6breQ6ANVTI0A==
 
 futoin-hkdf@^1.5.1:
-  version "1.5.2"
-  resolved "https://registry.yarnpkg.com/futoin-hkdf/-/futoin-hkdf-1.5.2.tgz#d316623d29f45fe5e6f136f435eccd74096bf676"
-  integrity sha512-Bnytx8kQJQoEAPGgTZw3kVPy8e/n9CDftPzc0okgaujmbdF1x7w8wg+u2xS0CML233HgruNk6VQW28CzuUFMKw==
+  version "1.5.3"
+  resolved "https://registry.yarnpkg.com/futoin-hkdf/-/futoin-hkdf-1.5.3.tgz#6c8024f2e1429da086d4e18289ef2239ad33ee35"
+  integrity sha512-SewY5KdMpaoCeh7jachEWFsh1nNlaDjNHZXWqL5IGwtpEYHTgkr2+AMCgNwKWkcc0wpSYrZfR7he4WdmHFtDxQ==
 
 get-caller-file@^2.0.1:
   version "2.0.5"
@@ -863,9 +948,9 @@ is-number@^7.0.0:
   integrity sha512-41Cifkg6e8TylSpdtTpeLVMqvSBEVzTttHvERD741+pnZ8ANv0004MRL43QKPDlK9cGvNp6NZWZUBlbGXYxxng==
 
 libphonenumber-js@^1.10.20:
-  version "1.10.34"
-  resolved "https://registry.yarnpkg.com/libphonenumber-js/-/libphonenumber-js-1.10.34.tgz#63374bb988688ac28b03ed6c4b344d412199d56c"
-  integrity sha512-p6g4NaQH4gK1gre32+kV14Mk6GPo2EDcPDvjbi+D2ycsPFsN4gVWNbs0itdHLZqByg6YEK8mE7OeP200I/ScTQ==
+  version "1.10.39"
+  resolved "https://registry.yarnpkg.com/libphonenumber-js/-/libphonenumber-js-1.10.39.tgz#12dd512621c9ebb13402a694ac81dc78511cd982"
+  integrity sha512-iPMM/NbSNIrdwbr94rAOos6krB7snhfzEptmk/DJUtTPs+P9gOhZ1YXVPcRgjpp3jJByclfm/Igvz45spfJK7g==
 
 libsignal-node@^2.0.1:
   version "2.0.1"
@@ -875,9 +960,9 @@ libsignal-node@^2.0.1:
     curve25519-js "^0.0.4"
     protobufjs "6.8.8"
 
-"libsignal@https://github.com/adiwajshing/libsignal-node.git":
+"libsignal@github:adiwajshing/libsignal-node":
   version "2.0.1"
-  resolved "https://github.com/adiwajshing/libsignal-node.git#11dbd962ea108187c79a7c46fe4d6f790e23da97"
+  resolved "https://codeload.github.com/adiwajshing/libsignal-node/tar.gz/11dbd962ea108187c79a7c46fe4d6f790e23da97"
   dependencies:
     curve25519-js "^0.0.4"
     protobufjs "6.8.8"
@@ -889,10 +974,20 @@ locate-path@^5.0.0:
   dependencies:
     p-locate "^4.1.0"
 
+lodash.clonedeep@^4.5.0:
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/lodash.clonedeep/-/lodash.clonedeep-4.5.0.tgz#e23f3f9c4f8fbdde872529c1071857a086e5ccef"
+  integrity sha512-H5ZhCF25riFd9uB5UCkVKo61m3S/xZk1x4wA6yp/L3RFP6Z/eHH1ymQcGLo7J3GMPfm0V/7m1tryHuGVxpqEBQ==
+
 long@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/long/-/long-4.0.0.tgz#9a7b71cfb7d361a194ea555241c92f7468d5bf28"
   integrity sha512-XsP+KhQif4bjX1kbuSiySJFNAehNxgLb6hPRGJ9QsUr8ajHkuXGdrHmFUTUUXhDwVX2R5bY4JNZEwbUiMhV+MA==
+
+lru-cache@^9.1.2:
+  version "9.1.2"
+  resolved "https://registry.yarnpkg.com/lru-cache/-/lru-cache-9.1.2.tgz#255fdbc14b75589d6d0e73644ca167a8db506835"
+  integrity sha512-ERJq3FOzJTxBbFjZ7iDs+NiK4VI9Wz+RdrrAB8dio1oV+YvdPzUEE4QNiT2VD51DkIbCYRUUzCRkssXCHqSnKQ==
 
 make-error@^1.1.1:
   version "1.3.6"
@@ -943,6 +1038,13 @@ minimatch@^3.1.2:
   dependencies:
     brace-expansion "^1.1.7"
 
+mpg123-decoder@^0.4.8:
+  version "0.4.8"
+  resolved "https://registry.yarnpkg.com/mpg123-decoder/-/mpg123-decoder-0.4.8.tgz#a2b5e77f491c7b7bf8b896e4764d71dcaec56e59"
+  integrity sha512-HXs8vbPjiFM0NOZ45T3C5i7mpYGEYhjH37SnFA907lOb9c93DQL40cDjerxj65IMwAYyPFq1aUjtDOjyR7O0gQ==
+  dependencies:
+    "@wasm-audio-decoders/common" "9.0.1"
+
 ms@2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.0.0.tgz#5608aeadfc00be6c2901df5f9861788de0d597c8"
@@ -983,6 +1085,11 @@ node-cache@^5.1.2:
   dependencies:
     clone "2.x"
 
+node-wav@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/node-wav/-/node-wav-0.0.2.tgz#89cb63cf8cd66ec8ab455f5ba4864e5fcb4605e8"
+  integrity sha512-M6Rm/bbG6De/gKGxOpeOobx/dnGuP0dz40adqx38boqHhlWssBJZgLCPBNtb9NkrmnKYiV04xELq+R6PFOnoLA==
+
 nodemon@^2.0.16:
   version "2.0.22"
   resolved "https://registry.yarnpkg.com/nodemon/-/nodemon-2.0.22.tgz#182c45c3a78da486f673d6c1702e00728daf5258"
@@ -1021,6 +1128,15 @@ object-inspect@^1.9.0:
   resolved "https://registry.yarnpkg.com/object-inspect/-/object-inspect-1.12.3.tgz#ba62dffd67ee256c8c086dfae69e016cd1f198b9"
   integrity sha512-geUvdk7c+eizMNUDkRpW1wJwgfOiOeHbxBR/hLXK1aT6zmVSO0jsQcs7fj6MGw89jC/cjGfLcNOrtMYtGqm81g==
 
+ogg-opus-decoder@^1.6.4:
+  version "1.6.5"
+  resolved "https://registry.yarnpkg.com/ogg-opus-decoder/-/ogg-opus-decoder-1.6.5.tgz#069545d584fc4102cf8c23776185010124b82f17"
+  integrity sha512-7NjCePv+XAcfsPdVhVjrKdrKc2BUAxhzkSY9ySOv3FSgqymu1J90J7vQRtSd2DoStFASznmJr5LB9j/EXrJZfQ==
+  dependencies:
+    "@wasm-audio-decoders/common" "9.0.1"
+    codec-parser "2.4.3"
+    opus-decoder "0.7.1"
+
 on-exit-leak-free@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/on-exit-leak-free/-/on-exit-leak-free-0.2.0.tgz#b39c9e3bf7690d890f4861558b0d7b90a442d209"
@@ -1039,6 +1155,13 @@ once@^1.4.0:
   integrity sha512-lNaJgI+2Q5URQBkccEKHTQOPaXdUxnZZElQTZY0MFUAuaEqe1E+Nyvgdz/aIyNi6Z9MzO5dv1H8n58/GELp3+w==
   dependencies:
     wrappy "1"
+
+opus-decoder@0.7.1:
+  version "0.7.1"
+  resolved "https://registry.yarnpkg.com/opus-decoder/-/opus-decoder-0.7.1.tgz#48c50f1feb0b49fa078ade93f08caeff9142ffae"
+  integrity sha512-AOFCMKLn7LJm8pOkksY5TsW/6+XmNyh1OQS9gxmdOGHLNYoOBrjSfc0nPNcmUMGEzOrTqZtPi8VJ/ABs2Hndvg==
+  dependencies:
+    "@wasm-audio-decoders/common" "9.0.1"
 
 p-limit@^2.2.0:
   version "2.3.0"
@@ -1179,6 +1302,13 @@ pstree.remy@^1.1.8:
   version "1.1.8"
   resolved "https://registry.yarnpkg.com/pstree.remy/-/pstree.remy-1.1.8.tgz#c242224f4a67c21f686839bbdb4ac282b8373d3a"
   integrity sha512-77DZwxQmxKnu3aR542U+X8FypNzbfJ+C5XQDk3uWjWxn6151aIMGthWYRXTqT1E5oJvg+ljaa2OJi+VfvCOQ8w==
+
+qoa-format@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/qoa-format/-/qoa-format-1.0.0.tgz#1638adb119ed3a32cf65efdb2c7e278f6d64b2ef"
+  integrity sha512-Vjp2aV2x06tHbZesCi2UtISaFdlLzy47Vbt0rNwwdihKFvGtUeFfytdnA8XZYADqWtRbK19+XXeRkv1Stg4qSQ==
+  dependencies:
+    "@thi.ng/bitstream" "^2.2.12"
 
 qrcode-terminal@^0.12.0:
   version "0.12.0"
@@ -1552,7 +1682,7 @@ wrappy@1:
   resolved "https://registry.yarnpkg.com/wrappy/-/wrappy-1.0.2.tgz#b5243d8f3ec1aa35f1364605bc0d1036e30ab69f"
   integrity sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ==
 
-ws@^8.0.0:
+ws@^8.13.0:
   version "8.13.0"
   resolved "https://registry.yarnpkg.com/ws/-/ws-8.13.0.tgz#9a9fb92f93cf41512a0735c8f4dd09b8a1211cd0"
   integrity sha512-x9vcZYTrFPC7aSIbj7sRCYo7L/Xb8Iy+pW0ng0wt2vCJv7M9HOMy0UoN3rr+IFC7hb7vXoqS+P9ktyLLLhO+LA==
