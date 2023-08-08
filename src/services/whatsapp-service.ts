@@ -1,6 +1,6 @@
 import { Boom } from '@hapi/boom'
 import makeWASocket, { useMultiFileAuthState, DisconnectReason, fetchLatestBaileysVersion, delay, AnyMessageContent, AuthenticationState, Browsers } from "@whiskeysockets/baileys";
-import { FormatToIndonesian, FormatToWhatsappJid } from '../util/formatter';
+import { FormatToPhoneNumber, FormatToWhatsappJid } from '../util/formatter';
 import * as fs from 'fs';
 
 const AUTH_FILE_LOCATION = './data/session';
@@ -59,7 +59,7 @@ export class WhatsappService {
             } else if (connection === 'open') {
                 // saat connection open, ambil nomor hp yang sedang terkoneksi
                 console.log('opened connection')
-                this.phoneNumber = FormatToIndonesian(state.creds.me?.id as string);
+                this.phoneNumber = FormatToPhoneNumber(state.creds.me?.id as string);
                 this.qrcode = "";
             }
 
