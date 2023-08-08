@@ -1,16 +1,12 @@
-const FormatToIndonesian = function (number: string){
+export const FormatToPhoneNumber = function (number: string){
     if(typeof(number) == 'undefined' || number == ''){
         return "";
     }
-
     number = number.substring(0, number.indexOf(':'));
-    if (number.startsWith('62')){
-        number = '0' + number.substring(2);
-    }
     return number;
 };
 
-const FormatToWhatsappJid = function (number: string){
+export const FormatToWhatsappJid = function (number: string){
     if(typeof(number) == 'undefined' || number == ''){
         return "";
     }
@@ -27,8 +23,3 @@ const FormatToWhatsappJid = function (number: string){
     }
     return number;
 };
-
-export {
-    FormatToIndonesian,
-    FormatToWhatsappJid
-}
