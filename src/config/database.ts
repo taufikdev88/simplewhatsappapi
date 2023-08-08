@@ -1,5 +1,6 @@
 import mongoose, { connect } from "mongoose";
 import bluebird from "bluebird";
+import logger from "../util/logger";
 
 export const databaseConnect = async (dbConnectionString: string | undefined) => {
   try {
@@ -10,7 +11,7 @@ export const databaseConnect = async (dbConnectionString: string | undefined) =>
     mongoose.Promise = bluebird;
     
     await connect(dbConnectionString as string);
-    console.log('mongodb connected');
+    logger.info('mongodb connected');
   }
   catch (err: any){
     console.error(err.message);

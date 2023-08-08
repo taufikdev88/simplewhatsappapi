@@ -1,5 +1,6 @@
 import { Result, Err, Ok } from "ts-results-es";
 import { Otp } from "../models/otp";
+import logger from "../util/logger";
 
 type GenerationErrors = "INVALID_RECIPIENT_NUMBER" | "ERROR_PERSISTING_OTP";
 type ValidationErrors = "TRANSACTION_NOT_FOUND";
@@ -43,7 +44,7 @@ export const Validate = async (id: string | any): Promise<Result<{ isValid: bool
     });
   }
   catch(err: any){
-    console.log(err.message);
+    logger.warn(err.message);
     return Err("TRANSACTION_NOT_FOUND");
   }
 }
