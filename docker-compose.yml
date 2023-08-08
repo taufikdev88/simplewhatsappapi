@@ -7,6 +7,18 @@ services:
       dockerfile: Dockerfile
     restart: always
     ports:
-      - 80:80
+      - 80:3000
     volumes:
-      - ./data:/app/data
+      - whatsapp_data:/app/data
+  
+  mongodb:
+    image: mongodb/mongodb-community-server:6.0-ubi8
+    restart: always
+    ports:
+      - 27017:27017
+    volumes:
+      - mongo_db:/data/db
+
+volumes:
+  whatsapp_data: {}
+  mongo_db: {}

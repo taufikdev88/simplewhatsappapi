@@ -4,3 +4,4 @@ npm-debug.log
 session.json
 package-lock.json
 yarn.lock
+.env

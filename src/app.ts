@@ -1,28 +1,29 @@
 import compression from 'compression';
-import express from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 import session from 'express-session';
 import flash from 'express-flash';
 import path from 'path';
+import { databaseConnect } from "./config/database";
 import { WhatsappService } from './services/whatsapp-service';
-import { SESSION_SECRET } from './util/secrets';
+import { SESSION_SECRET, DB_CONNECTION_STRING } from './util/environment';
 
 // Controllers (route handlers)
 import * as homeController from './controllers/home';
 import * as messageController from './controllers/message';
+import * as otpController from './controllers/otp';
 import * as qrController from './controllers/qr';
 import * as statusController from './controllers/status';
 
-// API Keys and Passport configuration
+// Connect Database
+databaseConnect(DB_CONNECTION_STRING);
 
 // Create Express Server
 const app = express();
 
-// Connect to MongoDB
-
 // Services
 const wa = new WhatsappService();
 wa.Initialize();
-const exposeWhatsappService = (req: express.Request, res: express.Response, next: express.NextFunction) => {
+const exposeWhatsappService = (req: Request, res: Response, next: NextFunction) => {
   req.wa = wa;
   next();
 }
@@ -54,5 +55,7 @@ app.get('/message', messageController.getMessageForm);
 app.post('/message', exposeWhatsappService, messageController.postMessage);
 app.get('/qr', exposeWhatsappService, qrController.getQrCode);
 app.get('/status', exposeWhatsappService, statusController.getStatus);
+app.post('/otp', exposeWhatsappService, otpController.request);
+app.post('/otp/:id/validate', otpController.validate);
 
 export default app;

@@ -18,3 +18,5 @@ if (!SESSION_SECRET) {
   logger.error("No client secret. Set SESSION_SECRET environment variable.");
   process.exit(1);
 }
+
+export const DB_CONNECTION_STRING: string | undefined = process.env["DB_CONNECTION_STRING"];
