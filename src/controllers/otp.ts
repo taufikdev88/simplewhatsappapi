@@ -1,7 +1,10 @@
 import { Request, Response } from "express";
-import { check, validationResult } from "express-validator";
+import { body, validationResult } from "express-validator";
 import { StatusCodes, ReasonPhrases } from "http-status-codes";
 import * as otpService from "../services/otp-service";
+
+const actionTemplate = "https://wa.me/{n}?text={t}";
+const messageTemplate = "*{code}*\n\n_please do not change the content.\nmohon jangan rubah isi pesan ini._";
 
 /**
  * Request OTP
@@ -9,8 +12,20 @@ import * as otpService from "../services/otp-service";
  * @route POST /otp
  */
 export const request = async (req: Request, res: Response) => {
-  await check('phoneNumber', 'phone number cannot be blank').notEmpty().run(req);
-  await check('phoneNumber', "invalid format for phone number").matches("^[0-9+ \-]+$").run(req);
+  await body('phoneNumber')
+    .notEmpty().withMessage('phone number cannot be blank')
+    .matches("^[0-9+ \-]+$").withMessage('invalid format')
+    .trim()
+    .run(req);
+
+  await body('message')
+    .optional()
+    .contains("{code}", {
+      ignoreCase: false,
+      minOccurrences: 1
+    }).withMessage('message must contains {code} for unique id')
+    .trim()
+    .run(req);
   
   // validation
   const errors = validationResult(req);
@@ -35,7 +50,11 @@ export const request = async (req: Request, res: Response) => {
   }
 
   // composing message
-  var waStatus = req.wa!.GetStatus();
+  let waStatus = req.wa!.GetStatus();
+
+  let message = actionTemplate
+    .replace('{n}', waStatus.phoneNumber)
+    .replace('{t}', (!req.body.message ? messageTemplate : req.body.message).replace('{code}', `otp:${generationResult.val.id}`));
 
   // return transaction id and action needed
   return res
@@ -45,9 +64,9 @@ export const request = async (req: Request, res: Response) => {
       errors: null,
       data: {
         id: generationResult.val.id,
-        action: `wa.me/${waStatus.phoneNumber}?message=test${generationResult.val.id}`
+        action: message
       }
-    })
+    });
 };
 
 /**
