@@ -2,6 +2,7 @@ import { Boom } from '@hapi/boom'
 import makeWASocket, { useMultiFileAuthState, DisconnectReason, fetchLatestBaileysVersion, delay, AnyMessageContent, AuthenticationState, Browsers } from "@whiskeysockets/baileys";
 import { FormatToPhoneNumber, FormatToWhatsappJid } from '../util/formatter';
 import * as fs from 'fs';
+import * as msgProcessorService from "../services/msg-processor-service";
 import logger from '../util/logger';
 
 const AUTH_FILE_LOCATION = './data/session';
@@ -84,16 +85,16 @@ export class WhatsappService {
         socket.ev.on('messages.upsert', async m => {
             logger.info('messages.upsert event', m);
 
-            m.messages.forEach(message => {
+            m.messages.forEach(async message => {
+                // skip message if the message sent by me
                 if (message.key.fromMe) {
                     return;
                 }
-
-                let senderJid = message.key.remoteJid;
-                let senderName = message.pushName;
-                let text = message.message?.conversation ?? message.message?.extendedTextMessage?.text;
-
-                logger.info(`got message from: ${senderJid} ,name: ${senderName} ,message: ${text}`);
+                // process the message
+                const result = await msgProcessorService.Process(message);
+                if (result.needReply){
+                    await this.SendWhatsappSimpleMessage(message.key.remoteJid, result.message);
+                }
             })
         });
 
@@ -104,10 +105,11 @@ export class WhatsappService {
         return socket;
     }
 
-    async SendWhatsappSimpleMessage(phoneNumber: string, message: AnyMessageContent) {
-        logger.info('Sending To:', phoneNumber, 'with message:', message);
+    async SendWhatsappSimpleMessage(phoneNumber: string | null | undefined, message: AnyMessageContent) {
+        logger.info(`Sending To: ${phoneNumber} with message: ${message}`);
+
         const jid = FormatToWhatsappJid(phoneNumber);
-        logger.info('Formatted jid to:', jid);
+        logger.info(`Formatted jid to: ${jid}`);
 
         await this.sock.presenceSubscribe(jid);
         await delay(10);

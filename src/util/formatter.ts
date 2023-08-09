@@ -1,13 +1,15 @@
-export const FormatToPhoneNumber = (number: string) : string => {
-    if(typeof(number) == 'undefined' || number == ''){
+export const FormatToPhoneNumber = (number: string | null | undefined) : string => {
+    if(number == undefined || number == null || number == ''){
         return "";
     }
-    number = number.substring(0, number.indexOf(':'));
+
+    const indexOfDoubleDots = number.indexOf(':');
+    number = number.substring(0, indexOfDoubleDots >= 0 ? indexOfDoubleDots : number.indexOf('@'));
     return number;
 }
 
-export const FormatStandardPhoneNumber = (number: string) : string => {
-    if(typeof(number) == 'undefined' || number == ''){
+export const FormatStandardPhoneNumber = (number: string | null | undefined) : string => {
+    if(number == undefined || number == null || number == ''){
         return "";
     }
     // remove all character except digit
@@ -19,10 +21,12 @@ export const FormatStandardPhoneNumber = (number: string) : string => {
     return number;
 }
 
-export const FormatToWhatsappJid = (number: string) : string => {
+export const FormatToWhatsappJid = (number: string | null | undefined) : string => {
     // format to standard number with country code first
     number = FormatStandardPhoneNumber(number);
     // add whatsapp jid
-    number = number + '@s.whatsapp.net';
+    if (!number.endsWith('@s.whatsapp.net')){
+        number = number + '@s.whatsapp.net';
+    }
     return number;
 }

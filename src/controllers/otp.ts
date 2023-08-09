@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { body, validationResult } from "express-validator";
 import { StatusCodes, ReasonPhrases } from "http-status-codes";
+import { FormatStandardPhoneNumber } from "../util/formatter";
 import * as otpService from "../services/otp-service";
 
 const actionTemplate = "https://wa.me/{n}?text={t}";
@@ -39,7 +40,8 @@ export const request = async (req: Request, res: Response) => {
   }
   
   // generation
-  let generationResult = await otpService.Generate(req.body.phoneNumber);
+  let formattedPhoneNumber = FormatStandardPhoneNumber(req.body.phoneNumber);
+  let generationResult = await otpService.Generate(formattedPhoneNumber);
   if (generationResult.err){
     return res
       .status(StatusCodes.BAD_REQUEST)
