@@ -57,7 +57,11 @@ export const request = async (req: Request, res: Response) => {
       .status(StatusCodes.BAD_REQUEST)
       .json({
         status: ReasonPhrases.BAD_REQUEST,
-        errors: generationResult.val
+        errors: [
+          {
+            type: "data",
+            msg: generationResult.val
+          }]
       });
   }
 
