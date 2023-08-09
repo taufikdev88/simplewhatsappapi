@@ -3,11 +3,16 @@
   "version": "2.1.0",
   "description": "",
   "scripts": {
-    "build": "tsc",
-    "start": "node dist/server.js",
+    "build": "tsc && yarn run copy-static-assets",
+    "start": "node build/server.js",
     "start:dev": "nodemon --ignore data/ src/server.ts",
     "dev": "yarn run start:dev",
-    "lint": "eslint . --ext .ts"
+    "lint": "eslint . --ext .ts",
+    "copy-static-assets": "ts-node copy-static-assets.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/taufikdev88/simplewhatsappapi"
   },
   "author": "taufikdev88",
   "license": "ISC",

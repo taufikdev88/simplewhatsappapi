@@ -5,8 +5,10 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    environment:
+      - DB_CONNECTION_STRING=mongodb://mongodb:27017/swa
     ports:
-      - 80:3000
+      - 80:80
     volumes:
       - whatsapp_data:/app/data
   

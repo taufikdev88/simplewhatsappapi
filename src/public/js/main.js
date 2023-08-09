@@ -1,4 +1,3 @@
-
 function convertFormToJSON(form) {
   return $(form)
     .serializeArray()
