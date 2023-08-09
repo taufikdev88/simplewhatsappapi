@@ -1,22 +1,78 @@
-# simplewhatsappapi
-Simple whatsapp api untuk microservice atau untuk layanan internal anda
+<h3 align="center">Simple Whatsapp Api</h3>
 
-Tanpa authentikasi
-Bisa digabung dengan identityserver anda sendiri melalui api gateway
+<div align="center">
 
-default port: 80
+[![Status](https://img.shields.io/badge/status-active-success.svg)]()
+[![GitHub Issues](https://img.shields.io/github/issues/kylelobo/The-Documentation-Compendium.svg)](https://github.com/kylelobo/The-Documentation-Compendium/issues)
+[![GitHub Pull Requests](https://img.shields.io/github/issues-pr/kylelobo/The-Documentation-Compendium.svg)](https://github.com/kylelobo/The-Documentation-Compendium/pulls)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](/LICENSE)
 
-endpoint:
-  1. GET / -> simple message
-  2. GET /status -> json status koneksi whatsapp dan qr string untuk diolah sendiri
-  3. GET /qr -> image qr yang bisa digunakan untuk scan
-  4. POST /message -> kirim instant message
+</div>
 
-debug program:
-  yarn install
-  yarn run build
-  yarn run start
+---
 
-penggunaan:
-  docker pull taufikdev88/simplewhatsappapi
-  docker run -d --restart always -p 80:80 -e ./data:/app/data taufikdev88/simplewhatsappapi
+<p align="center"> 
+  Free simple whatsapp api for notify your client or validate your client's phone number.<br> 
+  Based on [whiskeysockets/baileys](https://github.com/WhiskeySockets/Baileys)</a> project.
+</p>
+
+## 📝 Table of Contents
+
+- [About](#about)
+- [Getting Started](#getting_started)
+- [Deployment](#deployment)
+- [Usage](#usage)
+- [Built Using](#built_using)
+- [TODO](../TODO.md)
+- [Contributing](../CONTRIBUTING.md)
+- [Authors](#authors)
+- [Acknowledgments](#acknowledgement)
+
+## 🧐 About <a name = "about"></a>
+
+TO DO
+
+## 🏁 Getting Started <a name = "getting_started"></a>
+
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See [deployment](#deployment) for notes on how to deploy the project on a live system.
+
+### Prerequisites
+
+You will need Docker Installed on your computer. Please take a look on the get started section.
+
+```
+https://www.docker.com/get-started/
+```
+
+### Running
+
+Running services on local.
+
+Using Docker
+
+```bash
+#!/bin/bash
+docker run -p 80:80 -e SESSION_SECRET=StrongSessionSecret -e DB_CONNECTION_STRING=mongodb://localhost:27017/swa -v ./data:/app/data taufikdev88/simplewhatsappapi
+```
+
+## 🚀 Deployment <a name = "deployment"></a>
+
+You can deploy using docker-compose file or using kubernetes as a internal service. Don't publish port to external network because this service has no authentication/authorization method configured.
+
+## ⛏️ Built Using <a name = "built_using"></a>
+
+- [MongoDB](https://www.mongodb.com/) - Database
+- [Express](https://expressjs.com/) - Server Framework
+- [NodeJs](https://nodejs.org/en/) - Server Environment
+
+## ✍️ Authors <a name = "authors"></a>
+
+- [@taufikdev88](https://github.com/taufikdev88) - Idea & Initial work
+
+See also the list of [contributors](https://github.com/taufikdev88/simplewhatsappapi/contributors) who participated in this project.
+
+## 🎉 Acknowledgements <a name = "acknowledgement"></a>
+
+- Hat tip to anyone whose code was used
+- Inspiration
+- References
