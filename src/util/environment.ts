@@ -1,6 +1,7 @@
 import logger from './logger';
 import dotenv from 'dotenv';
 import fs from 'fs';
+import { makeString } from './random-generator';
 
 if (fs.existsSync(".env")) {
   logger.debug("Using .env file to supply config environment variables");
@@ -13,10 +14,5 @@ if (fs.existsSync(".env")) {
 export const ENVIRONMENT = process.env.NODE_ENV;
 const prod = ENVIRONMENT === "production"; // Anything else is treated as 'dev'
 
-export const SESSION_SECRET: string | undefined = process.env["SESSION_SECRET"];
-if (!SESSION_SECRET) {
-  logger.error("No client secret. Set SESSION_SECRET environment variable.");
-  process.exit(1);
-}
-
+export const SESSION_SECRET: string = process.env["SESSION_SECRET"] ?? makeString();
 export const DB_CONNECTION_STRING: string | undefined = process.env["DB_CONNECTION_STRING"];
