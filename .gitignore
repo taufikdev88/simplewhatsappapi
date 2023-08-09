@@ -2,3 +2,6 @@ build/
 node_modules/
 npm-debug.log
 session.json
+data/
+*.log
+.env

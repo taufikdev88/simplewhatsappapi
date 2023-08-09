@@ -1,0 +1,10 @@
+extends ../layout
+
+block content
+  .page-header
+    h3 QR Codes
+    img(src=`${url}` alt='whatsapp qrcode').mx-auto.d-block.rounded
+
+append scripts
+  script.
+    setTimeout(function(){window.location.reload();}, 5000);

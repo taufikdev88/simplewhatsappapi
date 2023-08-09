@@ -1,0 +1,55 @@
+extends layout
+
+block content 
+  .notif
+
+  .page-header
+    h3 Send Message Form
+    hr
+
+  form.form-horizontal(id='messageForm')
+    .form-group.row.justify-content-md-center.mb-3
+      label.col-sm-2.col-form-label.text-right.font-weight-bold(for='phoneNumber') Phone Number
+      .col-sm-8
+        input.form-control(type='text', name='phoneNumber', id='phoneNumber', autofocus=true, minlength=10, required=true)
+    .form-group.row.justify-content-md-center.mb-3
+      label.col-sm-2.col-form-label.text-right.font-weight-bold(for='message') Message
+      .col-sm-8
+        textarea.form-control(name='message', id='message', rows='7', minlength=3, required=true)
+    .form-group.row.justify-content-md-center.mb-3
+      .offset-sm-2.col-sm-8
+        button.btn.btn-primary(type='submit' id='submitButton')
+          i.bi.bi-envelope-fill
+          |  Send
+
+append scripts
+  script.
+    $("#messageForm").submit(function(e){
+      e.preventDefault();
+      $("#submitButton").attr('disabled', true);
+
+      const data = convertFormToJSON($(this));
+      $.ajax({
+        url: '/message',
+        cache: false,
+        type: 'POST',
+        data: JSON.stringify(data),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function(json){
+          $("#submitButton").attr('disabled', false);
+          $(".notif").append(
+            "<div class='alert alert-success alert-dismissible fade show' role='alert'> Success <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button></div>"
+          );
+        },
+        error: function(errorMessage){
+          $("#submitButton").attr('disabled', false);
+          const errors = errorMessage.responseJSON.errors;
+          errors.forEach(function(error){
+            $(".notif").append(
+              "<div class='alert alert-danger alert-dismissible fade show' role='alert'> " + error.msg + " <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button></div>"
+            );
+          })
+        }
+      });
+    });

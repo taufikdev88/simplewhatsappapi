@@ -1,7 +1,9 @@
 import { Boom } from '@hapi/boom'
 import makeWASocket, { useMultiFileAuthState, DisconnectReason, fetchLatestBaileysVersion, delay, AnyMessageContent, AuthenticationState, Browsers } from "@whiskeysockets/baileys";
-import { FormatToIndonesian, FormatToWhatsappJid } from '../helper/PhoneNumberFormatter';
+import { FormatToPhoneNumber, FormatToWhatsappJid } from '../util/formatter';
 import * as fs from 'fs';
+import * as msgProcessorService from "../services/msg-processor-service";
+import logger from '../util/logger';
 
 const AUTH_FILE_LOCATION = './data/session';
 
@@ -23,7 +25,7 @@ export class WhatsappService {
 
     async CreateNewSocket() {
         const { version, isLatest } = await fetchLatestBaileysVersion();
-        console.log(`Using wa version v${version.join('.')}, isLatest: ${isLatest}`);
+        logger.info(`Using wa version v${version.join('.')}, isLatest: ${isLatest}`);
 
         const { state, saveCreds } = await useMultiFileAuthState(AUTH_FILE_LOCATION);
         this.state = state;
@@ -42,10 +44,16 @@ export class WhatsappService {
         socket.ev.on('connection.update', async (update) => {
             const { connection, lastDisconnect, isNewLogin, qr } = update;
 
+            logger.info(`connection update: ${connection}, isNewLogin: ${isNewLogin}, qr: ${qr}`)
+            if (qr !== undefined) {
+                logger.info("gets qr code")
+                this.qrcode = qr as string;
+            }
+
+            // closed connection
             if (connection == 'close') {
                 const statusCode = (lastDisconnect?.error as Boom)?.output?.statusCode;
-
-                console.log('connection closed due to', (lastDisconnect?.error as Boom)?.message, statusCode);
+                logger.info('connection closed due to', lastDisconnect?.error, statusCode);
 
                 if (statusCode !== DisconnectReason.loggedOut) {
                     this.sock = await this.CreateNewSocket();
@@ -54,60 +62,60 @@ export class WhatsappService {
                 {
                     fs.rmSync(AUTH_FILE_LOCATION, { recursive: true, force: true });
                     this.needRestartService = true;
-                    console.log('client logged out, please restart the service for new qrcode');
+                    logger.info('client logged out, please restart the service for new qrcode');
                 }
-            } else if (connection === 'open') {
-                // saat connection open, ambil nomor hp yang sedang terkoneksi
-                console.log('opened connection')
-                this.phoneNumber = FormatToIndonesian(state.creds.me?.id as string);
-                this.qrcode = "";
             }
-
-            console.log(`connection update: ${connection}, isNewLogin: ${isNewLogin}, qr: ${qr}`)
-            if (qr !== undefined) {
-                console.log("gets qr code")
-                this.qrcode = qr as string;
+            // opened connection 
+            else if (connection == 'open') {
+                logger.info('opened connection');
+                this.phoneNumber = FormatToPhoneNumber(state.creds.me?.id as string);
+                this.qrcode = "";
             }
         });
 
         socket.ev.on('creds.update', this.saveCreds);
 
-        socket.ev.on('chats.upsert', item => console.log(`recv ${item.length} chats`))
-        socket.ev.on('chats.update', m => console.log(m));
-        socket.ev.on('chats.delete', m => console.log(m));
+        socket.ev.on('chats.upsert', item => logger.info(`recv ${item.length} chats`))
+        socket.ev.on('chats.update', m => logger.info('chats.update event', m));
+        socket.ev.on('chats.delete', m => logger.info('chats.delete event', m));
 
-        socket.ev.on('contacts.upsert', item => console.log(`recv ${item.length} contacts`))
-        socket.ev.on('contacts.upsert', m => console.log(m));
+        socket.ev.on('contacts.upsert', item => logger.info(`recv ${item.length} contacts`))
+        socket.ev.on('contacts.update', m => logger.info('contacts.update event', m));
 
         socket.ev.on('messages.upsert', async m => {
-            console.log('got messages', m.messages)
+            logger.info('messages.upsert event', m);
 
-            m.messages.forEach(message => {
-                if (message.key.fromMe || m.type !== 'notify') {
-                    return
+            m.messages.forEach(async message => {
+                // skip message if the message sent by me
+                if (message.key.fromMe) {
+                    return;
                 }
-
-                console.log('got message from:', message.key.remoteJid, 'name:', message.pushName, 'message:', message)
+                // process the message
+                const result = await msgProcessorService.Process(message);
+                if (result.needReply){
+                    await this.SendWhatsappSimpleMessage(message.key.remoteJid, result.message);
+                }
             })
         });
-        socket.ev.on('messages.update', m => console.log(m));
-        socket.ev.on('message-receipt.update', m => console.log(m));
 
-        socket.ev.on('presence.update', m => console.log(m))
+        socket.ev.on('messages.update', m => logger.info('messages.update event', m));
+        socket.ev.on('message-receipt.update', m => logger.info('message-receipt.update event', m));
+        socket.ev.on('presence.update', m => logger.info('presence.update event', m))
 
         return socket;
     }
 
-    async SendWhatsappSimpleMessage(phoneNumber: string, message: AnyMessageContent) {
-        console.log('Sending To:', phoneNumber, 'with message:', message);
+    async SendWhatsappSimpleMessage(phoneNumber: string | null | undefined, message: AnyMessageContent) {
+        logger.info(`Sending To: ${phoneNumber} with message: ${message}`);
+
         const jid = FormatToWhatsappJid(phoneNumber);
-        console.log('Formatted jid to:', jid);
+        logger.info(`Formatted jid to: ${jid}`);
 
         await this.sock.presenceSubscribe(jid);
         await delay(10);
         await this.sock.sendPresenceUpdate('composing', jid);
         await delay(10);
-        await this.sock.sendPresenceUpdate('paused', jid);
+        await this.sock.sendPresenceUpdate('available', jid);
         await delay(10);
         await this.sock.sendMessage(jid, {
             text: message

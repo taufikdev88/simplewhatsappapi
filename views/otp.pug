@@ -1,0 +1,108 @@
+extends layout
+
+block content 
+  .notif
+
+  .page-header
+    h3 OTP Request Form
+    hr
+
+  form.form-horizontal(id='otpForm')
+    .form-group.row.justify-content-md-center.mb-3
+      label.col-sm-2.col-form-label.text-right.font-weight-bold(for='phoneNumber') Phone Number
+      .col-sm-8
+        input.form-control(type='text', name='phoneNumber', id='phoneNumber', autofocus=true, minlength=10, required=true)
+    .row.justify-content-md-center.mb-2 
+      .col-sm-2
+      .col-sm-8
+        .form-check
+          input.form-check-input(type='checkbox' id='useCustomMessage')
+          label.form-check-label(for='useCustomMessage')
+            |  Use Custom Message Template
+    .form-group.row.justify-content-md-center.mb-3
+      label.col-sm-2.col-form-label.text-right.font-weight-bold(for='message') Custom Message Template
+      .col-sm-8
+        textarea.form-control(name='message', id='message', rows='7', disabled=true)
+    .form-group.row.justify-content-md-center.mb-3
+      .offset-sm-2.col-sm-8
+        button.btn.btn-primary(type='submit' id='submitButton')
+          i.bi.bi-envelope-fill
+          |  Send
+
+append scripts
+  script.
+    function validate(id){
+      $.ajax({
+        url: `/otp/${id}/validate`,
+        cache: false,
+        type: 'POST',
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function(json){
+          $(".notif").append(
+            "<div class='alert alert-success alert-dismissible fade show validation-result' role='alert'><button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button></div>"
+          );
+          $(".validation-result").append(
+            `<code class='mb-3'> ${JSON.stringify(json, null, 1)} </code>`
+          );
+        },
+        error: function(errorMessage){
+          const errors = errorMessage.responseJSON.errors;
+          errors.forEach(function(error){
+            $(".notif").append(
+              `<div class='alert alert-danger alert-dismissible fade show' role='alert'> ${error.msg} <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button></div>`
+            );
+          })
+        }
+      })
+    }
+
+    $("#useCustomMessage").change(function(){
+      if(this.checked){
+        $("#message").removeAttr("disabled");
+      } else {
+        $("#message").attr("disabled", true);
+      }
+    });
+
+    $("#otpForm").submit(function(e){
+      e.preventDefault();
+      $("#submitButton").attr('disabled', true);
+
+      const data = convertFormToJSON($(this));
+      $.ajax({
+        url: '/otp',
+        cache: false,
+        type: 'POST',
+        data: JSON.stringify(data),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function(json){
+          $("#submitButton").attr('disabled', false);
+          $(".notif").append(
+            "<div class='alert alert-success alert-dismissible fade show' role='alert'> Success <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button></div>"
+          );
+          $(".notif").append(
+            "<div class='alert alert-secondary alert-dismissible fade show result' role='alert'><button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button></div>"
+          );
+          $(".result").append(
+            `<code class='mb-3'> ${JSON.stringify(json, null, 1)} </code><hr>`
+          );
+          $(".result").append(
+            `<a href='${json.data.action}' class='btn btn-outline-success me-3' role='button' target='_blank'> Goto Whatsapp </a>`
+          );
+          $(".result").append(
+            `<button type='button' class='btn btn-outline-success me-3' onclick='validate("${json.data.id}")'>Validate</button>`
+          );
+        },
+        error: function(errorMessage){
+          $("#submitButton").attr('disabled', false);
+          const errors = errorMessage.responseJSON.errors;
+          errors.forEach(function(error){
+            $(".notif").append(
+              `<div class='alert alert-danger alert-dismissible fade show' role='alert'> ${error.msg} <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button></div>`
+            );
+          })
+        }
+      });
+    });
