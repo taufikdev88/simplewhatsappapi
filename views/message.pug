@@ -24,15 +24,6 @@ block content
 
 append scripts
   script.
-    function convertFormToJSON(form) {
-      return $(form)
-        .serializeArray()
-        .reduce(function (json, { name, value }) {
-          json[name] = value;
-          return json;
-        }, {});
-    };
-
     $("#messageForm").submit(function(e){
       e.preventDefault();
       const data = convertFormToJSON($(this));

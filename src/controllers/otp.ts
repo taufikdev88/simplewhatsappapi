@@ -8,6 +8,16 @@ const actionTemplate = "https://wa.me/{n}?text={t}";
 const messageTemplate = "*{code}*\n\n_please do not change the content._\n_mohon jangan rubah isi pesan ini._";
 
 /**
+ * Get OTP FORM
+ * @route GET /otp
+ */
+export const getOtpForm = (req: Request, res: Response) => {
+  return res.render('otp', {
+    title: 'OTP Request'
+  });
+}
+
+/**
  * Request OTP
  * Response recipient number as request id and action for recipient
  * @route POST /otp

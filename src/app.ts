@@ -55,6 +55,7 @@ app.get('/message', messageController.getMessageForm);
 app.post('/message', exposeWhatsappService, messageController.postMessage);
 app.get('/qr', exposeWhatsappService, qrController.getQrCode);
 app.get('/status', exposeWhatsappService, statusController.getStatus);
+app.get('/otp', otpController.getOtpForm);
 app.post('/otp', exposeWhatsappService, otpController.request);
 app.post('/otp/:id/validate', otpController.validate);
 
