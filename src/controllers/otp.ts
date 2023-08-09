@@ -4,7 +4,7 @@ import { StatusCodes, ReasonPhrases } from "http-status-codes";
 import * as otpService from "../services/otp-service";
 
 const actionTemplate = "https://wa.me/{n}?text={t}";
-const messageTemplate = "*{code}*\n\n_please do not change the content.\nmohon jangan rubah isi pesan ini._";
+const messageTemplate = "*{code}*\n\n_please do not change the content._\n_mohon jangan rubah isi pesan ini._";
 
 /**
  * Request OTP
@@ -64,7 +64,7 @@ export const request = async (req: Request, res: Response) => {
       errors: null,
       data: {
         id: generationResult.val.id,
-        action: message
+        action: encodeURI(message)
       }
     });
 };

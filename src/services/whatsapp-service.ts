@@ -43,10 +43,16 @@ export class WhatsappService {
         socket.ev.on('connection.update', async (update) => {
             const { connection, lastDisconnect, isNewLogin, qr } = update;
 
+            logger.info(`connection update: ${connection}, isNewLogin: ${isNewLogin}, qr: ${qr}`)
+            if (qr !== undefined) {
+                logger.info("gets qr code")
+                this.qrcode = qr as string;
+            }
+
+            // closed connection
             if (connection == 'close') {
                 const statusCode = (lastDisconnect?.error as Boom)?.output?.statusCode;
-
-                logger.info('connection closed due to', (lastDisconnect?.error as Boom)?.message, statusCode);
+                logger.info('connection closed due to', lastDisconnect?.error, statusCode);
 
                 if (statusCode !== DisconnectReason.loggedOut) {
                     this.sock = await this.CreateNewSocket();
@@ -57,44 +63,43 @@ export class WhatsappService {
                     this.needRestartService = true;
                     logger.info('client logged out, please restart the service for new qrcode');
                 }
-            } else if (connection === 'open') {
-                // saat connection open, ambil nomor hp yang sedang terkoneksi
-                logger.info('opened connection')
+            }
+            // opened connection 
+            else if (connection == 'open') {
+                logger.info('opened connection');
                 this.phoneNumber = FormatToPhoneNumber(state.creds.me?.id as string);
                 this.qrcode = "";
-            }
-
-            logger.info(`connection update: ${connection}, isNewLogin: ${isNewLogin}, qr: ${qr}`)
-            if (qr !== undefined) {
-                logger.info("gets qr code")
-                this.qrcode = qr as string;
             }
         });
 
         socket.ev.on('creds.update', this.saveCreds);
 
         socket.ev.on('chats.upsert', item => logger.info(`recv ${item.length} chats`))
-        socket.ev.on('chats.update', m => logger.info(m));
-        socket.ev.on('chats.delete', m => logger.info(m));
+        socket.ev.on('chats.update', m => logger.info('chats.update event', m));
+        socket.ev.on('chats.delete', m => logger.info('chats.delete event', m));
 
         socket.ev.on('contacts.upsert', item => logger.info(`recv ${item.length} contacts`))
-        socket.ev.on('contacts.upsert', m => logger.info(m));
+        socket.ev.on('contacts.update', m => logger.info('contacts.update event', m));
 
         socket.ev.on('messages.upsert', async m => {
-            logger.info('got messages', m.messages)
+            logger.info('messages.upsert event', m);
 
             m.messages.forEach(message => {
-                if (message.key.fromMe || m.type !== 'notify') {
-                    return
+                if (message.key.fromMe) {
+                    return;
                 }
 
-                logger.info('got message from:', message.key.remoteJid, 'name:', message.pushName, 'message:', message)
+                let senderJid = message.key.remoteJid;
+                let senderName = message.pushName;
+                let text = message.message?.conversation ?? message.message?.extendedTextMessage?.text;
+
+                logger.info(`got message from: ${senderJid} ,name: ${senderName} ,message: ${text}`);
             })
         });
-        socket.ev.on('messages.update', m => logger.info(m));
-        socket.ev.on('message-receipt.update', m => logger.info(m));
 
-        socket.ev.on('presence.update', m => logger.info(m))
+        socket.ev.on('messages.update', m => logger.info('messages.update event', m));
+        socket.ev.on('message-receipt.update', m => logger.info('message-receipt.update event', m));
+        socket.ev.on('presence.update', m => logger.info('presence.update event', m))
 
         return socket;
     }
@@ -108,7 +113,7 @@ export class WhatsappService {
         await delay(10);
         await this.sock.sendPresenceUpdate('composing', jid);
         await delay(10);
-        await this.sock.sendPresenceUpdate('paused', jid);
+        await this.sock.sendPresenceUpdate('available', jid);
         await delay(10);
         await this.sock.sendMessage(jid, {
             text: message
