@@ -25,7 +25,7 @@ block content
         textarea.form-control(name='message', id='message', rows='7', disabled=true)
     .form-group.row.justify-content-md-center.mb-3
       .offset-sm-2.col-sm-8
-        button.btn.btn-primary(type='submit')
+        button.btn.btn-primary(type='submit' id='submitButton')
           i.bi.bi-envelope-fill
           |  Send
 
@@ -67,6 +67,8 @@ append scripts
 
     $("#otpForm").submit(function(e){
       e.preventDefault();
+      $("#submitButton").attr('disabled', true);
+
       const data = convertFormToJSON($(this));
       $.ajax({
         url: '/otp',
@@ -76,6 +78,7 @@ append scripts
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function(json){
+          $("#submitButton").attr('disabled', false);
           $(".notif").append(
             "<div class='alert alert-success alert-dismissible fade show' role='alert'> Berhasil <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button></div>"
           );
@@ -93,6 +96,7 @@ append scripts
           );
         },
         error: function(errorMessage){
+          $("#submitButton").attr('disabled', false);
           const errors = errorMessage.responseJSON.errors;
           errors.forEach(function(error){
             $(".notif").append(
