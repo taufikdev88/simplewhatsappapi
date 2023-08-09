@@ -1,0 +1,9 @@
+extends ../layout
+
+block content
+  h3 QR Codes
+  h4 #{message}
+
+append scripts
+  script.
+    setTimeout(function(){window.location.reload();}, 10000);

@@ -1,6 +1,7 @@
 build/
+data/
 node_modules/
 npm-debug.log
 session.json
-package-lock.json
-yarn.lock
+*.log
+.env
