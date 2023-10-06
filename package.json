@@ -20,7 +20,7 @@
   "dependencies": {
     "@adiwajshing/keyed-db": "^0.2.4",
     "@hapi/boom": "^10.0.0",
-    "@whiskeysockets/baileys": "^6.4.0",
+    "@whiskeysockets/baileys": "^6.5.0",
     "bluebird": "^3.7.2",
     "compression": "^1.7.4",
     "dotenv": "^16.3.1",
