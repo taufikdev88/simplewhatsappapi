@@ -5,7 +5,7 @@ import logger from "../util/logger";
 type GenerationErrors = "INVALID_RECIPIENT_NUMBER" | "ERROR_PERSISTING_OTP";
 type ValidationErrors = "TRANSACTION_NOT_FOUND" | "INVALID_OTP_REF" | "EXPIRED_OTP_TRANSACTION";
 
-export const Generate = async (recipient: string | any): Promise<Result<{ id: string }, GenerationErrors>> => {
+export const Generate = async (recipient: string | any): Promise<Result<{ id: string, expiredAt: Date }, GenerationErrors>> => {
   if (!recipient || recipient === "") {
     return Err("INVALID_RECIPIENT_NUMBER");
   }
@@ -18,7 +18,8 @@ export const Generate = async (recipient: string | any): Promise<Result<{ id: st
     await otp.save();
 
     return Ok({
-      id: otp.id
+      id: otp.id,
+      expiredAt: otp.expiredAt
     });
   }
   catch {
