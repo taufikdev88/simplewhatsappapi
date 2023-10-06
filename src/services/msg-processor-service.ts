@@ -19,7 +19,9 @@ export const Process = async (m: WAMessage | undefined) : Promise<{
   let senderJid = m.key.remoteJid;
   let formattedJid = FormatToPhoneNumber(senderJid);
   let senderName = m.pushName;
-  let text = m.message?.extendedTextMessage?.text ?? m.message?.conversation;
+  let text = m.message?.ephemeralMessage?.message?.extendedTextMessage?.text ??
+    m.message?.extendedTextMessage?.text ?? 
+    m.message?.conversation;
 
   logger.info(`got message from: ${senderJid} -> ${formattedJid} ,name: ${senderName} ,message: ${text}`);
 
@@ -60,7 +62,7 @@ const GetType = (m: string | null | undefined) : {
   }
 
   const otpMatch = m.match("otp:[a-zA-Z0-9]+");
-  logger.debug('otp match', otpMatch);
+  logger.debug('otp match regex func', otpMatch);
 
   if (otpMatch){
     return {
