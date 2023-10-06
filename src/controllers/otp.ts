@@ -80,7 +80,8 @@ export const request = async (req: Request, res: Response) => {
       errors: null,
       data: {
         id: generationResult.val.id,
-        action: encodeURI(message)
+        action: encodeURI(message),
+        expiredAt: generationResult.val.expiredAt 
       }
     });
 };
