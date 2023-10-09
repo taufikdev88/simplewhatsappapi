@@ -3,14 +3,16 @@ import mongoose from "mongoose";
 // create an interface representing document in mongoDB
 interface IOtp {
   recipient: string;
+  cs: string;
 }
 
-interface OtpModelInterface extends mongoose.Model<OtpDoc>{
+interface OtpModelInterface extends mongoose.Model<OtpDoc> {
   build(attr: IOtp): OtpDoc
 }
 
 interface OtpDoc extends mongoose.Document {
   recipient: string;
+  cs: string;
   isValidated: boolean;
   expiredAt: Date;
   createdAt: Date;
@@ -23,6 +25,10 @@ const otpSchema = new mongoose.Schema<OtpDoc>({
     type: String,
     required: true,
   },
+  cs: {
+    type: String,
+    required: true,
+  },
   isValidated: {
     type: Boolean,
     required: true,
@@ -31,7 +37,7 @@ const otpSchema = new mongoose.Schema<OtpDoc>({
   expiredAt: {
     type: Date,
     required: true,
-    default: () => new Date(+new Date()+ 2*60*1000), // default expired 2 min from now
+    default: () => new Date(+new Date() + 2 * 60 * 1000), // default expired 2 min from now
   },
   createdAt: {
     type: Date,

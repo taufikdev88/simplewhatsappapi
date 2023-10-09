@@ -37,10 +37,10 @@ export const request = async (req: Request, res: Response) => {
     }).withMessage('message must contains {code} for unique id')
     .trim()
     .run(req);
-  
+
   // validation
   const errors = validationResult(req);
-  if (!errors.isEmpty()){
+  if (!errors.isEmpty()) {
     return res
       .status(StatusCodes.BAD_REQUEST)
       .json({
@@ -48,11 +48,14 @@ export const request = async (req: Request, res: Response) => {
         errors: errors.array()
       });
   }
-  
+
+  // composing message
+  let waStatus = req.wa!.GetStatus();
+
   // generation
   let formattedPhoneNumber = FormatStandardPhoneNumber(req.body.phoneNumber);
-  let generationResult = await otpService.Generate(formattedPhoneNumber);
-  if (generationResult.err){
+  let generationResult = await otpService.Generate(formattedPhoneNumber, waStatus.phoneNumber);
+  if (generationResult.err) {
     return res
       .status(StatusCodes.BAD_REQUEST)
       .json({
@@ -64,9 +67,6 @@ export const request = async (req: Request, res: Response) => {
           }]
       });
   }
-
-  // composing message
-  let waStatus = req.wa!.GetStatus();
 
   let message = actionTemplate
     .replace('{n}', waStatus.phoneNumber)
@@ -81,7 +81,7 @@ export const request = async (req: Request, res: Response) => {
       data: {
         id: generationResult.val.id,
         action: encodeURI(message),
-        expiredAt: generationResult.val.expiredAt 
+        expiredAt: generationResult.val.expiredAt
       }
     });
 };
@@ -94,7 +94,7 @@ export const validate = async (req: Request, res: Response) => {
   let id: string = req.params.id;
 
   let validationResult = await otpService.Validate(id);
-  if (validationResult.err){
+  if (validationResult.err) {
     return res
       .status(StatusCodes.NOT_FOUND)
       .json({
@@ -107,8 +107,8 @@ export const validate = async (req: Request, res: Response) => {
         ]
       });
   }
-  
-  if (!validationResult.val.isValid){
+
+  if (!validationResult.val.isValid) {
     return res
       .status(StatusCodes.BAD_REQUEST)
       .json({
