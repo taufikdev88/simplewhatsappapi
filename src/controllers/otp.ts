@@ -129,3 +129,69 @@ export const validate = async (req: Request, res: Response) => {
       errors: null
     });
 };
+
+/**
+ * Get Count Hit OTP
+ * Response count hit request OTP
+ * @route GET /otp/count
+ */
+export const count = async (req: Request, res: Response) => {
+  try {
+    const start = req.query.start as string;
+    const end = req.query.end as string;
+
+    const startDate = new Date(start)
+    const endDate = new Date(end)
+    endDate.setDate(endDate.getDate() + 1)
+
+    //if end date greater than of start date
+    if (startDate.getTime() >= endDate.getTime()) {
+      return res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({
+          status: ReasonPhrases.BAD_REQUEST,
+          errors: [
+            {
+              type: "data",
+              msg: "End date must greater than equal to start date"
+            }]
+        });
+    }
+
+    const countResult = await otpService.Count(startDate.toISOString().split('T')[0], endDate.toISOString().split('T')[0]);
+    if (countResult.err) {
+      return res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({
+          status: ReasonPhrases.BAD_REQUEST,
+          errors: [
+            {
+              type: "data",
+              msg: countResult.val
+            }]
+        });
+    }
+
+    // return transaction id and action needed
+    return res
+      .status(StatusCodes.OK)
+      .json({
+        status: ReasonPhrases.OK,
+        errors: null,
+        data: {
+          count: countResult.val.count
+        }
+      });
+  } catch (err: any) {
+    return res
+      .status(StatusCodes.BAD_REQUEST)
+      .json({
+        status: ReasonPhrases.BAD_REQUEST,
+        errors: [
+          {
+            type: "data",
+            msg: err.message
+          }]
+      });
+  }
+}

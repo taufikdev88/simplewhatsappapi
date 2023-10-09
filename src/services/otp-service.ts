@@ -99,3 +99,21 @@ export const Confirm = async (id: string | any, sender: string | any): Promise<R
     return Err("TRANSACTION_NOT_FOUND");
   }
 }
+
+export const Count = async (start: string | any, end: string | any): Promise<Result<{ count: number }, ValidationErrors>> => {
+  try {
+    const resCount = Otp.countDocuments({
+      createdAt: {
+        $gte: start,
+        $lt: end,
+      }
+    }).exec()
+
+    return Ok({
+      count: await resCount
+    })
+  } catch (err: any) {
+    logger.warn(err.message);
+    return Err("TRANSACTION_NOT_FOUND");
+  }
+}
