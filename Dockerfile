@@ -16,7 +16,7 @@ COPY --from=ts-compiler /app/package*.json ./
 COPY --from=ts-compiler /app/build ./
 RUN yarn install --production=true
 
-FROM gcr.io/distroless/nodejs:16
+FROM gcr.io/distroless/nodejs:18
 WORKDIR /app
 COPY --from=ts-remover /app ./
 COPY ./views /views
