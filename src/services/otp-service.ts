@@ -2,11 +2,14 @@ import { Result, Err, Ok } from "ts-results-es";
 import { Otp } from "../models/otp";
 import { OtpValid } from '../models/otp_validated';
 import logger from "../util/logger";
+import { sendData } from "../util/fetch";
+
+
 
 type GenerationErrors = "INVALID_RECIPIENT_NUMBER" | "ERROR_PERSISTING_OTP";
-type ValidationErrors = "TRANSACTION_NOT_FOUND" | "INVALID_OTP_REF" | "EXPIRED_OTP_TRANSACTION";
+type ValidationErrors = "TRANSACTION_NOT_FOUND" | "INVALID_OTP_REF" | "EXPIRED_OTP_TRANSACTION" | "ERROR_CALLBACK";
 
-export const Generate = async (recipient: string | any, cs: string | any): Promise<Result<{ id: string, expiredAt: Date }, GenerationErrors>> => {
+export const Generate = async (recipient: string | any, cs: string | any, type: string | any, url: string | any): Promise<Result<{ id: string, expiredAt: Date }, GenerationErrors>> => {
   if (!recipient || recipient === "") {
     return Err("INVALID_RECIPIENT_NUMBER");
   }
@@ -14,7 +17,9 @@ export const Generate = async (recipient: string | any, cs: string | any): Promi
   try {
     const otp = Otp.build({
       recipient: recipient,
-      cs: cs
+      cs: cs,
+      callbackType: type,
+      callbackUrl: url
     });
 
     await otp.save();
@@ -78,6 +83,13 @@ export const Confirm = async (id: string | any, sender: string | any): Promise<R
       return Err("EXPIRED_OTP_TRANSACTION");
     }
 
+    if (otp.callbackType != null && otp.callbackUrl != null) {
+      const status = await HandleCallback(otp.callbackType, otp.callbackUrl)
+      if (status.err) {
+        return Err(status.val);
+      }
+    }
+
     otp.isValidated = true;
     otp.updatedAt = new Date();
 
@@ -87,6 +99,8 @@ export const Confirm = async (id: string | any, sender: string | any): Promise<R
       otpNumber: otp._id,
       recipient: otp.recipient,
       cs: otp.cs,
+      callbackType: otp.callbackType,
+      callbackUrl: otp.callbackUrl,
       isValidated: true
     });
 
@@ -115,5 +129,19 @@ export const Count = async (start: string | any, end: string | any): Promise<Res
   } catch (err: any) {
     logger.warn(err.message);
     return Err("TRANSACTION_NOT_FOUND");
+  }
+}
+
+const HandleCallback = async (type: string | any, url: string | any): Promise<Result<boolean, ValidationErrors>> => {
+  try {
+    if (type == "simple") {
+      await sendData(url, {})
+      return Ok(true)
+    }
+
+    return Ok(true)
+  } catch (err: any) {
+    logger.warn(err.message);
+    return Err("ERROR_CALLBACK");
   }
 }

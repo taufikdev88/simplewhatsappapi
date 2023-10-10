@@ -38,6 +38,17 @@ export const request = async (req: Request, res: Response) => {
     .trim()
     .run(req);
 
+  await body('callbackUrl')
+    .optional()
+    .matches(/^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$|^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/i).withMessage('invalid format url')
+    .trim()
+    .run(req);
+
+  await body('callbackType')
+    .optional()
+    .trim()
+    .run(req);
+
   // validation
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -54,7 +65,7 @@ export const request = async (req: Request, res: Response) => {
 
   // generation
   let formattedPhoneNumber = FormatStandardPhoneNumber(req.body.phoneNumber);
-  let generationResult = await otpService.Generate(formattedPhoneNumber, waStatus.phoneNumber);
+  let generationResult = await otpService.Generate(formattedPhoneNumber, waStatus.phoneNumber, req.body.callbackType, req.body.callbackUrl);
   if (generationResult.err) {
     return res
       .status(StatusCodes.BAD_REQUEST)

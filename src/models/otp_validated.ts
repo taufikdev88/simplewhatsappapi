@@ -5,6 +5,8 @@ interface IOtpValid {
     otpNumber: string,
     recipient: string;
     cs: string;
+    callbackType: string;
+    callbackUrl: string;
     isValidated: boolean;
 }
 
@@ -16,6 +18,8 @@ interface OtpValidDoc extends mongoose.Document {
     otpNumber: string,
     recipient: string;
     cs: string;
+    callbackType: string;
+    callbackUrl: string;
     isValidated: boolean;
     createdAt: Date;
     updatedAt: Date;
@@ -34,6 +38,14 @@ const otpValidSchema = new mongoose.Schema<OtpValidDoc>({
     cs: {
         type: String,
         required: true,
+    },
+    callbackType: {
+        type: String,
+        required: false,
+    },
+    callbackUrl: {
+        type: String,
+        required: false,
     },
     isValidated: {
         type: Boolean,

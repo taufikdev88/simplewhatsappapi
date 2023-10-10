@@ -4,6 +4,8 @@ import mongoose from "mongoose";
 interface IOtp {
   recipient: string;
   cs: string;
+  callbackType: string;
+  callbackUrl: string;
 }
 
 interface OtpModelInterface extends mongoose.Model<OtpDoc> {
@@ -13,6 +15,8 @@ interface OtpModelInterface extends mongoose.Model<OtpDoc> {
 interface OtpDoc extends mongoose.Document {
   recipient: string;
   cs: string;
+  callbackType: string;
+  callbackUrl: string;
   isValidated: boolean;
   expiredAt: Date;
   createdAt: Date;
@@ -28,6 +32,14 @@ const otpSchema = new mongoose.Schema<OtpDoc>({
   cs: {
     type: String,
     required: true,
+  },
+  callbackType: {
+    type: String,
+    required: false,
+  },
+  callbackUrl: {
+    type: String,
+    required: false,
   },
   isValidated: {
     type: Boolean,
