@@ -1,8 +1,9 @@
 import { Request, Response } from "express";
-import { body, validationResult } from "express-validator";
+import { body, check, checkSchema, validationResult } from "express-validator";
 import { StatusCodes, ReasonPhrases } from "http-status-codes";
 import { FormatStandardPhoneNumber } from "../util/formatter";
 import * as otpService from "../services/otp-service";
+import { OtpCallbackType } from "../enums/otp_callback_type";
 
 const actionTemplate = "https://wa.me/{n}?text={t}";
 const messageTemplate = "*{code}*\n\n_please do not change the content._\n_mohon jangan rubah isi pesan ini._";
@@ -37,10 +38,30 @@ export const request = async (req: Request, res: Response) => {
     }).withMessage('message must contains {code} for unique id')
     .trim()
     .run(req);
-  
+
+  await checkSchema({
+    callbackUrl: {
+      optional: true,
+      matches: {
+        options: /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$|^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/i,
+        errorMessage: 'invalid format url'
+      },
+      trim: true
+    },
+    callbackType: {
+      optional: true,
+      isIn: {
+        options: Object.values(OtpCallbackType).filter((v) => isNaN(Number(v))),
+        errorMessage: 'invalid format callback type'
+      },
+      trim: true
+    }
+  })
+    .run(req);
+
   // validation
   const errors = validationResult(req);
-  if (!errors.isEmpty()){
+  if (!errors.isEmpty()) {
     return res
       .status(StatusCodes.BAD_REQUEST)
       .json({
@@ -48,11 +69,14 @@ export const request = async (req: Request, res: Response) => {
         errors: errors.array()
       });
   }
-  
+
+  // composing message
+  let waStatus = req.wa!.GetStatus();
+
   // generation
   let formattedPhoneNumber = FormatStandardPhoneNumber(req.body.phoneNumber);
-  let generationResult = await otpService.Generate(formattedPhoneNumber);
-  if (generationResult.err){
+  let generationResult = await otpService.Generate(formattedPhoneNumber, waStatus.phoneNumber, req.body.callbackType, req.body.callbackUrl);
+  if (generationResult.err) {
     return res
       .status(StatusCodes.BAD_REQUEST)
       .json({
@@ -64,9 +88,6 @@ export const request = async (req: Request, res: Response) => {
           }]
       });
   }
-
-  // composing message
-  let waStatus = req.wa!.GetStatus();
 
   let message = actionTemplate
     .replace('{n}', waStatus.phoneNumber)
@@ -81,7 +102,7 @@ export const request = async (req: Request, res: Response) => {
       data: {
         id: generationResult.val.id,
         action: encodeURI(message),
-        expiredAt: generationResult.val.expiredAt 
+        expiredAt: generationResult.val.expiredAt
       }
     });
 };
@@ -94,7 +115,7 @@ export const validate = async (req: Request, res: Response) => {
   let id: string = req.params.id;
 
   let validationResult = await otpService.Validate(id);
-  if (validationResult.err){
+  if (validationResult.err) {
     return res
       .status(StatusCodes.NOT_FOUND)
       .json({
@@ -107,8 +128,8 @@ export const validate = async (req: Request, res: Response) => {
         ]
       });
   }
-  
-  if (!validationResult.val.isValid){
+
+  if (!validationResult.val.isValid) {
     return res
       .status(StatusCodes.BAD_REQUEST)
       .json({
@@ -129,3 +150,91 @@ export const validate = async (req: Request, res: Response) => {
       errors: null
     });
 };
+
+/**
+ * Get Count Hit OTP
+ * Response count hit request OTP
+ * @route GET /otp/count
+ */
+export const count = async (req: Request, res: Response) => {
+  await check('start')
+    .notEmpty().withMessage('start date cannot be blank')
+    .isISO8601().toDate().withMessage('invalid format')
+    .trim()
+    .run(req);
+
+  await check('end')
+    .notEmpty().withMessage('end date cannot be blank')
+    .isISO8601().toDate().withMessage('invalid format')
+    .trim()
+    .run(req);
+
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res
+      .status(StatusCodes.BAD_REQUEST)
+      .json({
+        status: ReasonPhrases.BAD_REQUEST,
+        errors: errors.array()
+      });
+  }
+
+  try {
+    const start = req.query.start as string;
+    const end = req.query.end as string;
+
+    const startDate = new Date(start)
+    const endDate = new Date(end)
+    endDate.setDate(endDate.getDate() + 1)
+
+    //if end date greater than of start date
+    if (startDate.getTime() >= endDate.getTime()) {
+      return res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({
+          status: ReasonPhrases.BAD_REQUEST,
+          errors: [
+            {
+              type: "data",
+              msg: "End date must greater than equal to start date"
+            }]
+        });
+    }
+
+    const countResult = await otpService.Count(startDate.toISOString().split('T')[0], endDate.toISOString().split('T')[0]);
+    if (countResult.err) {
+      return res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({
+          status: ReasonPhrases.BAD_REQUEST,
+          errors: [
+            {
+              type: "data",
+              msg: countResult.val
+            }]
+        });
+    }
+
+    // return transaction id and action needed
+    return res
+      .status(StatusCodes.OK)
+      .json({
+        status: ReasonPhrases.OK,
+        errors: null,
+        data: {
+          count: countResult.val.count
+        }
+      });
+  } catch (err: any) {
+    return res
+      .status(StatusCodes.BAD_REQUEST)
+      .json({
+        status: ReasonPhrases.BAD_REQUEST,
+        errors: [
+          {
+            type: "data",
+            msg: err.message
+          }]
+      });
+  }
+}

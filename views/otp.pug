@@ -23,6 +23,21 @@ block content
       label.col-sm-2.col-form-label.text-right.font-weight-bold(for='message') Custom Message Template
       .col-sm-8
         textarea.form-control(name='message', id='message', rows='7', disabled=true)
+    .row.justify-content-md-center.mb-2 
+      .col-sm-2
+      .col-sm-8
+        .form-check
+          input.form-check-input(type='checkbox' id='useCustomCallback')
+          label.form-check-label(for='useCustomCallback')
+            |  Use Send Custom Callback
+    .form-group.row.justify-content-md-center.mb-3
+      label.col-sm-2.col-form-label.text-right.font-weight-bold(for='callbackType') Callback Type
+      .col-sm-8
+        input.form-control(type='text', name='callbackType', id='callbackType', minlength=1, disabled=true)
+    .form-group.row.justify-content-md-center.mb-3
+      label.col-sm-2.col-form-label.text-right.font-weight-bold(for='callbackUrl') Callback Url
+      .col-sm-8
+        input.form-control(type='text', name='callbackUrl', id='callbackUrl', minlength=5, disabled=true)
     .form-group.row.justify-content-md-center.mb-3
       .offset-sm-2.col-sm-8
         button.btn.btn-primary(type='submit' id='submitButton')
@@ -62,6 +77,19 @@ append scripts
         $("#message").removeAttr("disabled");
       } else {
         $("#message").attr("disabled", true);
+        $("#message").val("");
+      }
+    });
+
+    $("#useCustomCallback").change(function(){
+      if(this.checked){
+        $("#callbackType").removeAttr("disabled");
+        $("#callbackUrl").removeAttr("disabled");
+      } else {
+        $("#callbackType").attr("disabled", true);
+        $("#callbackType").val("");
+        $("#callbackUrl").attr("disabled", true);
+        $("#callbackUrl").val("");
       }
     });
 

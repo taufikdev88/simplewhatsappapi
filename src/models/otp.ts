@@ -2,15 +2,21 @@ import mongoose from "mongoose";
 
 // create an interface representing document in mongoDB
 interface IOtp {
+  sender: string;
   recipient: string;
+  callbackType: string;
+  callbackUrl: string;
 }
 
-interface OtpModelInterface extends mongoose.Model<OtpDoc>{
+interface OtpModelInterface extends mongoose.Model<OtpDoc> {
   build(attr: IOtp): OtpDoc
 }
 
 interface OtpDoc extends mongoose.Document {
+  sender: string;
   recipient: string;
+  callbackType: string;
+  callbackUrl: string;
   isValidated: boolean;
   expiredAt: Date;
   createdAt: Date;
@@ -19,9 +25,21 @@ interface OtpDoc extends mongoose.Document {
 
 // create a schema corresponding to the document interface
 const otpSchema = new mongoose.Schema<OtpDoc>({
+  sender: {
+    type: String,
+    required: true,
+  },
   recipient: {
     type: String,
     required: true,
+  },
+  callbackType: {
+    type: String,
+    required: false,
+  },
+  callbackUrl: {
+    type: String,
+    required: false,
   },
   isValidated: {
     type: Boolean,
@@ -31,7 +49,7 @@ const otpSchema = new mongoose.Schema<OtpDoc>({
   expiredAt: {
     type: Date,
     required: true,
-    default: () => new Date(+new Date()+ 2*60*1000), // default expired 2 min from now
+    default: () => new Date(+new Date() + 2 * 60 * 1000), // default expired 2 min from now
   },
   createdAt: {
     type: Date,
