@@ -1,5 +1,5 @@
-FROM node:16-alpine as ts-compiler
-RUN apk add git
+FROM node:18-alpine as ts-compiler
+RUN apk add --no-cache git
 WORKDIR /app
 COPY *.lock ./
 COPY package*.json ./
@@ -8,15 +8,15 @@ RUN yarn install
 COPY . ./
 RUN yarn run build
 
-FROM node:16-alpine as ts-remover
-RUN apk add git
+FROM node:18-alpine as ts-remover
+RUN apk add --no-cache git
 WORKDIR /app
 COPY --from=ts-compiler /app/*.lock ./
 COPY --from=ts-compiler /app/package*.json ./
 COPY --from=ts-compiler /app/build ./
 RUN yarn install --production=true
 
-FROM gcr.io/distroless/nodejs:16
+FROM gcr.io/distroless/nodejs:18
 WORKDIR /app
 COPY --from=ts-remover /app ./
 COPY ./views /views
