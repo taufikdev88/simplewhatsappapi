@@ -7,7 +7,7 @@ import { sendData } from "../util/fetch";
 
 
 type GenerationErrors = "INVALID_RECIPIENT_NUMBER" | "ERROR_PERSISTING_OTP";
-type ValidationErrors = "TRANSACTION_NOT_FOUND" | "INVALID_OTP_REF" | "EXPIRED_OTP_TRANSACTION" | "INVALID_CALLBACK";
+type ValidationErrors = "TRANSACTION_NOT_FOUND" | "INVALID_OTP_REF" | "EXPIRED_OTP_TRANSACTION" | "INVALID_CALLBACK" | "SERVER_UNAVAILABLE";
 
 export const Generate = async (sender: string | any, recipient: string | any, type: string | any, url: string | any): Promise<Result<{ id: string, expiredAt: Date }, GenerationErrors>> => {
   if (!sender || sender === "") {
@@ -135,13 +135,13 @@ export const Count = async (start: string | any, end: string | any): Promise<Res
 const HandleCallback = async (type: string | any, url: string | any, otp: string | any, sender: string | any): Promise<Result<boolean, ValidationErrors>> => {
   try {
     if (type == "Simple") {
-      await sendData(url, { otpId: otp, phoneNumber: sender })
+      await sendData(url, { otpId: otp, phoneNumber: sender, status: "validated" })
       return Ok(true)
     }
 
     return Ok(true)
   } catch (err: any) {
     logger.warn(err.message);
-    return Err("INVALID_CALLBACK");
+    return Err("SERVER_UNAVAILABLE");
   }
 }
