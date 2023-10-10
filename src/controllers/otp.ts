@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { body, validationResult } from "express-validator";
+import { body, check, validationResult } from "express-validator";
 import { StatusCodes, ReasonPhrases } from "http-status-codes";
 import { FormatStandardPhoneNumber } from "../util/formatter";
 import * as otpService from "../services/otp-service";
@@ -136,6 +136,28 @@ export const validate = async (req: Request, res: Response) => {
  * @route GET /otp/count
  */
 export const count = async (req: Request, res: Response) => {
+  await check('start')
+    .notEmpty().withMessage('start date cannot be blank')
+    .isISO8601().toDate().withMessage('invalid format')
+    .trim()
+    .run(req);
+
+  await check('end')
+    .notEmpty().withMessage('end date cannot be blank')
+    .isISO8601().toDate().withMessage('invalid format')
+    .trim()
+    .run(req);
+
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res
+      .status(StatusCodes.BAD_REQUEST)
+      .json({
+        status: ReasonPhrases.BAD_REQUEST,
+        errors: errors.array()
+      });
+  }
+
   try {
     const start = req.query.start as string;
     const end = req.query.end as string;
