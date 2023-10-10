@@ -84,7 +84,7 @@ export const Confirm = async (id: string | any, sender: string | any): Promise<R
     }
 
     if (otp.callbackType != null && otp.callbackUrl != null) {
-      const status = await HandleCallback(otp.callbackType, otp.callbackUrl)
+      const status = await HandleCallback(otp.callbackType, otp.callbackUrl, otp._id, otp.sender)
       if (status.err) {
         return Err(status.val);
       }
@@ -132,10 +132,10 @@ export const Count = async (start: string | any, end: string | any): Promise<Res
   }
 }
 
-const HandleCallback = async (type: string | any, url: string | any): Promise<Result<boolean, ValidationErrors>> => {
+const HandleCallback = async (type: string | any, url: string | any, otp: string | any, sender: string | any): Promise<Result<boolean, ValidationErrors>> => {
   try {
     if (type == "Simple") {
-      await sendData(url, {})
+      await sendData(url, { otp: otp, phone: sender })
       return Ok(true)
     }
 
