@@ -4,6 +4,7 @@ import { StatusCodes, ReasonPhrases } from "http-status-codes";
 import { FormatStandardPhoneNumber } from "../util/formatter";
 import * as otpService from "../services/otp-service";
 import { OtpCallbackType } from "../enums/otp_callback_type";
+import { sendData } from "../util/fetch";
 
 const actionTemplate = "https://wa.me/{n}?text={t}";
 const messageTemplate = "*{code}*\n\n_please do not change the content._\n_mohon jangan rubah isi pesan ini._";
@@ -73,8 +74,29 @@ export const request = async (req: Request, res: Response) => {
   // composing message
   let waStatus = req.wa!.GetStatus();
 
-  // generation
   let formattedPhoneNumber = FormatStandardPhoneNumber(req.body.phoneNumber);
+
+  //checking api callback
+  if (req.body.callbackType && req.body.callbackUrl) {
+    try {
+      if (req.body.callbackType == "Simple") {
+        await sendData(req.body.callbackUrl, { otpId: null, phoneNumber: formattedPhoneNumber, status: "requested" })
+      }
+    } catch (err: any) {
+      return res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({
+          status: ReasonPhrases.BAD_REQUEST,
+          errors: [
+            {
+              type: "data",
+              msg: "INVALID_CALLBACK"
+            }]
+        });
+    }
+  }
+
+  // generation
   let generationResult = await otpService.Generate(formattedPhoneNumber, waStatus.phoneNumber, req.body.callbackType, req.body.callbackUrl);
   if (generationResult.err) {
     return res
