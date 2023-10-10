@@ -1,3 +1,16 @@
+#### 2.1.1 (2023-10-10)
+
+##### Bug Fixes
+
+*  change attribute otp, change checkSchema for callback otp ([a2332e9a](https://github.com/taufikdev88/simplewhatsappapi/commit/a2332e9ad08cb0e1032fcd97bb8d38ca0043a8e1))
+
+##### Other Changes
+
+*  add optional function callback url when validate otp ([7d5dfbff](https://github.com/taufikdev88/simplewhatsappapi/commit/7d5dfbfffbfce98066626bcb2737293b06021cd3))
+*  add validator date when get count request otp ([03500e8d](https://github.com/taufikdev88/simplewhatsappapi/commit/03500e8d2502ef4af9cf1e1374b2ce1e81108461))
+*  get count request otp by range date ([fd044435](https://github.com/taufikdev88/simplewhatsappapi/commit/fd044435b6791ebc42e320fbd1d00c2ce95d14f1))
+*  add validated otp log & add attr cs at otp ([f49d3919](https://github.com/taufikdev88/simplewhatsappapi/commit/f49d391953f6e20238f2a493dd1f59f3bfecf1eb))
+
 #### 2.1.1 (2023-10-06)
 
 ##### Chores
