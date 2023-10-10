@@ -135,7 +135,7 @@ export const Count = async (start: string | any, end: string | any): Promise<Res
 const HandleCallback = async (type: string | any, url: string | any, otp: string | any, sender: string | any): Promise<Result<boolean, ValidationErrors>> => {
   try {
     if (type == "Simple") {
-      await sendData(url, { otp: otp, phone: sender })
+      await sendData(url, { otpId: otp, phoneNumber: sender })
       return Ok(true)
     }
 

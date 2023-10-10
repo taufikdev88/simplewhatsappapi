@@ -1,5 +1,5 @@
-FROM node:16-alpine as ts-compiler
-RUN apk add git
+FROM node:18-alpine as ts-compiler
+RUN apk add --no-cache git
 WORKDIR /app
 COPY *.lock ./
 COPY package*.json ./
@@ -8,8 +8,8 @@ RUN yarn install
 COPY . ./
 RUN yarn run build
 
-FROM node:16-alpine as ts-remover
-RUN apk add git
+FROM node:18-alpine as ts-remover
+RUN apk add --no-cache git
 WORKDIR /app
 COPY --from=ts-compiler /app/*.lock ./
 COPY --from=ts-compiler /app/package*.json ./
