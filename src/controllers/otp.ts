@@ -1,8 +1,9 @@
 import { Request, Response } from "express";
-import { body, check, validationResult } from "express-validator";
+import { body, check, checkSchema, validationResult } from "express-validator";
 import { StatusCodes, ReasonPhrases } from "http-status-codes";
 import { FormatStandardPhoneNumber } from "../util/formatter";
 import * as otpService from "../services/otp-service";
+import { OtpCallbackType } from "../enums/otp_callback_type";
 
 const actionTemplate = "https://wa.me/{n}?text={t}";
 const messageTemplate = "*{code}*\n\n_please do not change the content._\n_mohon jangan rubah isi pesan ini._";
@@ -38,15 +39,24 @@ export const request = async (req: Request, res: Response) => {
     .trim()
     .run(req);
 
-  await body('callbackUrl')
-    .optional()
-    .matches(/^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$|^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/i).withMessage('invalid format url')
-    .trim()
-    .run(req);
-
-  await body('callbackType')
-    .optional()
-    .trim()
+  await checkSchema({
+    callbackUrl: {
+      optional: true,
+      matches: {
+        options: /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$|^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/i,
+        errorMessage: 'invalid format url'
+      },
+      trim: true
+    },
+    callbackType: {
+      optional: true,
+      isIn: {
+        options: Object.values(OtpCallbackType).filter((v) => isNaN(Number(v))),
+        errorMessage: 'invalid format callback type'
+      },
+      trim: true
+    }
+  })
     .run(req);
 
   // validation

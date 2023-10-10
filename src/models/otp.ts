@@ -2,8 +2,8 @@ import mongoose from "mongoose";
 
 // create an interface representing document in mongoDB
 interface IOtp {
+  sender: string;
   recipient: string;
-  cs: string;
   callbackType: string;
   callbackUrl: string;
 }
@@ -13,8 +13,8 @@ interface OtpModelInterface extends mongoose.Model<OtpDoc> {
 }
 
 interface OtpDoc extends mongoose.Document {
+  sender: string;
   recipient: string;
-  cs: string;
   callbackType: string;
   callbackUrl: string;
   isValidated: boolean;
@@ -25,11 +25,11 @@ interface OtpDoc extends mongoose.Document {
 
 // create a schema corresponding to the document interface
 const otpSchema = new mongoose.Schema<OtpDoc>({
-  recipient: {
+  sender: {
     type: String,
     required: true,
   },
-  cs: {
+  recipient: {
     type: String,
     required: true,
   },

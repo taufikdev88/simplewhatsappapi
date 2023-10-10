@@ -2,9 +2,9 @@ import mongoose from "mongoose";
 
 // create an interface representing document in mongoDB
 interface IOtpValid {
-    otpNumber: string,
+    otpId: string,
+    sender: string;
     recipient: string;
-    cs: string;
     callbackType: string;
     callbackUrl: string;
     isValidated: boolean;
@@ -15,9 +15,9 @@ interface OtpValidModelInterface extends mongoose.Model<OtpValidDoc> {
 }
 
 interface OtpValidDoc extends mongoose.Document {
-    otpNumber: string,
+    otpId: string,
+    sender: string;
     recipient: string;
-    cs: string;
     callbackType: string;
     callbackUrl: string;
     isValidated: boolean;
@@ -27,15 +27,15 @@ interface OtpValidDoc extends mongoose.Document {
 
 // create a schema corresponding to the document interface
 const otpValidSchema = new mongoose.Schema<OtpValidDoc>({
-    otpNumber: {
+    otpId: {
+        type: String,
+        required: true,
+    },
+    sender: {
         type: String,
         required: true,
     },
     recipient: {
-        type: String,
-        required: true,
-    },
-    cs: {
         type: String,
         required: true,
     },

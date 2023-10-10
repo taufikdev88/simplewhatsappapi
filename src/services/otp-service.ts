@@ -7,17 +7,17 @@ import { sendData } from "../util/fetch";
 
 
 type GenerationErrors = "INVALID_RECIPIENT_NUMBER" | "ERROR_PERSISTING_OTP";
-type ValidationErrors = "TRANSACTION_NOT_FOUND" | "INVALID_OTP_REF" | "EXPIRED_OTP_TRANSACTION" | "ERROR_CALLBACK";
+type ValidationErrors = "TRANSACTION_NOT_FOUND" | "INVALID_OTP_REF" | "EXPIRED_OTP_TRANSACTION" | "INVALID_CALLBACK";
 
-export const Generate = async (recipient: string | any, cs: string | any, type: string | any, url: string | any): Promise<Result<{ id: string, expiredAt: Date }, GenerationErrors>> => {
-  if (!recipient || recipient === "") {
+export const Generate = async (sender: string | any, recipient: string | any, type: string | any, url: string | any): Promise<Result<{ id: string, expiredAt: Date }, GenerationErrors>> => {
+  if (!sender || sender === "") {
     return Err("INVALID_RECIPIENT_NUMBER");
   }
 
   try {
     const otp = Otp.build({
+      sender: sender,
       recipient: recipient,
-      cs: cs,
       callbackType: type,
       callbackUrl: url
     });
@@ -96,9 +96,9 @@ export const Confirm = async (id: string | any, sender: string | any): Promise<R
     await otp.save();
 
     const otpValid = OtpValid.build({
-      otpNumber: otp._id,
+      otpId: otp._id,
       recipient: otp.recipient,
-      cs: otp.cs,
+      sender: otp.sender,
       callbackType: otp.callbackType,
       callbackUrl: otp.callbackUrl,
       isValidated: true
@@ -134,7 +134,7 @@ export const Count = async (start: string | any, end: string | any): Promise<Res
 
 const HandleCallback = async (type: string | any, url: string | any): Promise<Result<boolean, ValidationErrors>> => {
   try {
-    if (type == "simple") {
+    if (type == "Simple") {
       await sendData(url, {})
       return Ok(true)
     }
@@ -142,6 +142,6 @@ const HandleCallback = async (type: string | any, url: string | any): Promise<Re
     return Ok(true)
   } catch (err: any) {
     logger.warn(err.message);
-    return Err("ERROR_CALLBACK");
+    return Err("INVALID_CALLBACK");
   }
 }
