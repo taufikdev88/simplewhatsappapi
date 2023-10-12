@@ -28,9 +28,10 @@ append scripts
       e.preventDefault();
       $("#submitButton").attr('disabled', true);
 
+      var host = "#{PATH}"
       const data = convertFormToJSON($(this));
       $.ajax({
-        url: '/message',
+        url: `${host}/message`,
         cache: false,
         type: 'POST',
         data: JSON.stringify(data),

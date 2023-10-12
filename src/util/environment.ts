@@ -16,3 +16,4 @@ const prod = ENVIRONMENT === "production"; // Anything else is treated as 'dev'
 
 export const SESSION_SECRET: string = process.env["SESSION_SECRET"] ?? makeString();
 export const DB_CONNECTION_STRING: string | undefined = process.env["DB_CONNECTION_STRING"];
+export const PATHBASE: string = process.env["PATHBASE"] ?? ""
