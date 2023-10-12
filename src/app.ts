@@ -5,7 +5,7 @@ import flash from 'express-flash';
 import path from 'path';
 import { databaseConnect } from "./config/database";
 import { WhatsappService } from './services/whatsapp-service';
-import { SESSION_SECRET, DB_CONNECTION_STRING, PATHBASE } from './util/environment';
+import { SESSION_SECRET, DB_CONNECTION_STRING, PATH_BASE } from './util/environment';
 
 // Controllers (route handlers)
 import * as homeController from './controllers/home';
@@ -61,6 +61,6 @@ router.get('/otp/count', otpController.count);
 router.post('/otp', exposeWhatsappService, otpController.request);
 router.post('/otp/:id/validate', otpController.validate);
 
-app.use(PATHBASE, router)
+app.use(PATH_BASE, router)
 
 export default app;

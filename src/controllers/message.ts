@@ -3,6 +3,7 @@
 import { Response, Request } from 'express';
 import { body, validationResult } from 'express-validator';
 import { StatusCodes, ReasonPhrases } from 'http-status-codes';
+import { PATH_BASE } from "../util/environment";
 
 /**
  * Get Message Form
@@ -10,7 +11,8 @@ import { StatusCodes, ReasonPhrases } from 'http-status-codes';
  */
 export const getMessageForm = (req: Request, res: Response) => {
   return res.render('message', {
-    title: 'Send Message'
+    title: 'Send Message',
+    PATH: PATH_BASE
   });
 }
 
@@ -24,7 +26,7 @@ export const postMessage = async (req: Request, res: Response) => {
     .matches("^[0-9+ \-]+$").withMessage('invalid format')
     .trim()
     .run(req);
-    
+
   await body("message")
     .notEmpty().withMessage("message cannot be blank")
     .trim()
@@ -32,7 +34,7 @@ export const postMessage = async (req: Request, res: Response) => {
 
   const errors = validationResult(req);
 
-  if (!errors.isEmpty()){
+  if (!errors.isEmpty()) {
     return res
       .status(StatusCodes.BAD_REQUEST)
       .json({
@@ -43,7 +45,7 @@ export const postMessage = async (req: Request, res: Response) => {
 
   const phoneNumber = req.body.phoneNumber;
   const message = req.body.message;
-  
+
   req.wa!.SendWhatsappSimpleMessage(phoneNumber, message);
 
   return res
