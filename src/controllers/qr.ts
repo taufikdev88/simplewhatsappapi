@@ -13,7 +13,7 @@ export const getQrCode = (req: Request, res: Response) => {
     return res.render('qr/info', {
       title: 'Qr Code',
       message: 'Client Logged Out, Restart Service For New QRCode',
-      PATH: PATH_BASE
+      pathBase: PATH_BASE
     });
   }
   if (status.isConnected) {
@@ -22,7 +22,7 @@ export const getQrCode = (req: Request, res: Response) => {
       title: 'Qr Code',
       message: 'Connected to ' + status.phoneNumber,
       test: 'test',
-      PATH: PATH_BASE
+      pathBase: PATH_BASE
     });
   }
 
@@ -32,13 +32,13 @@ export const getQrCode = (req: Request, res: Response) => {
       return res.render('qr/info', {
         title: 'Qr Code',
         message: err.message,
-        PATH: PATH_BASE
+        pathBase: PATH_BASE
       })
     } else {
       return res.render('qr/index', {
         title: 'Qr Code',
         url: url,
-        PATH: PATH_BASE
+        pathBase: PATH_BASE
       });
     }
   });

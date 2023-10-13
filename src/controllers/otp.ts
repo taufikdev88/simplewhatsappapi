@@ -17,7 +17,7 @@ const messageTemplate = "*{code}*\n\n_please do not change the content._\n_mohon
 export const getOtpForm = (req: Request, res: Response) => {
   return res.render('otp', {
     title: 'OTP Request',
-    PATH: PATH_BASE
+    pathBase: PATH_BASE
   });
 }
 

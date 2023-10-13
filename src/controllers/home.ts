@@ -8,6 +8,6 @@ import { PATH_BASE } from "../util/environment";
 export const index = (req: Request, res: Response) => {
   res.render('home', {
     title: 'Home',
-    PATH: PATH_BASE
+    pathBase: PATH_BASE
   });
 };

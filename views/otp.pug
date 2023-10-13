@@ -47,7 +47,7 @@ block content
 append scripts
   script.
     function validate(id){
-      var host = "#{PATH}"
+      var host = "#{pathBase}"
       $.ajax({
         url: `${host}/otp/${id}/validate`,
         cache: false,
@@ -99,7 +99,7 @@ append scripts
       $("#submitButton").attr('disabled', true);
 
       const data = convertFormToJSON($(this));
-      var host = "#{PATH}"
+      var host = "#{pathBase}"
       $.ajax({
         url: `${host}/otp`,
         cache: false,

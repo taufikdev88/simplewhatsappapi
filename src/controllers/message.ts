@@ -12,7 +12,7 @@ import { PATH_BASE } from "../util/environment";
 export const getMessageForm = (req: Request, res: Response) => {
   return res.render('message', {
     title: 'Send Message',
-    PATH: PATH_BASE
+    pathBase: PATH_BASE
   });
 }
 
