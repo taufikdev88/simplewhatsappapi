@@ -1,6 +1,6 @@
 nav.navbar.navbar-expand-lg.navbar-light.bg-light
   .container-fluid
-    a.navbar-brand(href='/')
+    a.navbar-brand(href=`${pathBase}/`)
       i.bi.bi-hexagon-half
       |  Simple Whatsapp Api
     button.navbar-toggler(type='button', data-bs-toggle='collapse', data-bs-target='.navbar-collapse')
@@ -10,10 +10,10 @@ nav.navbar.navbar-expand-lg.navbar-light.bg-light
       .dropdown-divider
       ul.nav.navbar-nav.mr-auto
         li.nav-item(class=(title === 'Home') ? 'active' : undefined)
-          a.nav-link(href='/') Home
+          a.nav-link(href=`${pathBase}/`) Home
         li.nav-item(class=(title === 'Qr Code') ? 'active' : undefined)
-          a.nav-link(href='/qr') Qr Code
+          a.nav-link(href=`${pathBase}/qr`) Qr Code
         li.nav-item(class=(title === 'Send Message') ? 'active' : undefined)
-          a.nav-link(href='/message') Send Message
+          a.nav-link(href=`${pathBase}/message`) Send Message
         li.nav-item(class=(title === 'OTP Request') ? 'action' : undefined)
-          a.nav-link(href='/otp') OTP Request
+          a.nav-link(href=`${pathBase}/otp`) OTP Request

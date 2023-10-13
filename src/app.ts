@@ -5,7 +5,7 @@ import flash from 'express-flash';
 import path from 'path';
 import { databaseConnect } from "./config/database";
 import { WhatsappService } from './services/whatsapp-service';
-import { SESSION_SECRET, DB_CONNECTION_STRING } from './util/environment';
+import { SESSION_SECRET, DB_CONNECTION_STRING, PATH_BASE } from './util/environment';
 
 // Controllers (route handlers)
 import * as homeController from './controllers/home';
@@ -50,14 +50,17 @@ app.use(
 /**
  * Primary app routes.
  */
-app.get('/', homeController.index);
-app.get('/message', messageController.getMessageForm);
-app.post('/message', exposeWhatsappService, messageController.postMessage);
-app.get('/qr', exposeWhatsappService, qrController.getQrCode);
-app.get('/status', exposeWhatsappService, statusController.getStatus);
-app.get('/otp', otpController.getOtpForm);
-app.get('/otp/count', otpController.count);
-app.post('/otp', exposeWhatsappService, otpController.request);
-app.post('/otp/:id/validate', otpController.validate);
+const router = express.Router()
+router.get('/', homeController.index);
+router.get('/message', messageController.getMessageForm);
+router.post('/message', exposeWhatsappService, messageController.postMessage);
+router.get('/qr', exposeWhatsappService, qrController.getQrCode);
+router.get('/status', exposeWhatsappService, statusController.getStatus);
+router.get('/otp', otpController.getOtpForm);
+router.get('/otp/count', otpController.count);
+router.post('/otp', exposeWhatsappService, otpController.request);
+router.post('/otp/:id/validate', otpController.validate);
+
+app.use(PATH_BASE, router)
 
 export default app;
