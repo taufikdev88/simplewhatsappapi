@@ -5,6 +5,7 @@ import { FormatStandardPhoneNumber } from "../util/formatter";
 import * as otpService from "../services/otp-service";
 import { OtpCallbackType } from "../enums/otp_callback_type";
 import { sendData } from "../util/fetch";
+import { PATH_BASE } from "../util/environment";
 
 const actionTemplate = "https://wa.me/{n}?text={t}";
 const messageTemplate = "*{code}*\n\n_please do not change the content._\n_mohon jangan rubah isi pesan ini._";
@@ -15,7 +16,8 @@ const messageTemplate = "*{code}*\n\n_please do not change the content._\n_mohon
  */
 export const getOtpForm = (req: Request, res: Response) => {
   return res.render('otp', {
-    title: 'OTP Request'
+    title: 'OTP Request',
+    pathBase: PATH_BASE
   });
 }
 

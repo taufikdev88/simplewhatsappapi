@@ -1,3 +1,26 @@
+#### 2.3.0 (2023-10-13)
+
+##### Build System / Dependencies
+
+*  update release version and base image version ([fdddd018](https://github.com/taufikdev88/simplewhatsappapi/commit/fdddd0182eaa2e968e8a31a3ae6400a2f5d086c7))
+
+##### Bug Fixes
+
+*  change PATH to camelCase ([88452e6b](https://github.com/taufikdev88/simplewhatsappapi/commit/88452e6b02959dc650a7543f51d49015da577db7))
+*  fix access PATH_BASE for pug view ([0c029c2e](https://github.com/taufikdev88/simplewhatsappapi/commit/0c029c2e295a6152a8e6ac687b8d61200f4dcf09))
+*  add validation api callback before generate otp ([5005f4d0](https://github.com/taufikdev88/simplewhatsappapi/commit/5005f4d06992ebcb8a6c8ba281bf244ab1c018cb))
+*  docker build error ([9d4874f0](https://github.com/taufikdev88/simplewhatsappapi/commit/9d4874f073e718374a3787909575921f70c21d02))
+*  add payload to post callback api ([f017d473](https://github.com/taufikdev88/simplewhatsappapi/commit/f017d473f1ed4623a1905c39e3b46129224c13c4))
+*  change attribute otp, change checkSchema for callback otp ([a2332e9a](https://github.com/taufikdev88/simplewhatsappapi/commit/a2332e9ad08cb0e1032fcd97bb8d38ca0043a8e1))
+
+##### New Features
+
+*  add prefix route from env ([c74ff4f4](https://github.com/taufikdev88/simplewhatsappapi/commit/c74ff4f4313666b8032b001a624e4afbb1cfc372))
+*  add optional function callback url when validate otp ([7d5dfbff](https://github.com/taufikdev88/simplewhatsappapi/commit/7d5dfbfffbfce98066626bcb2737293b06021cd3))
+*  add validator date when get count request otp ([03500e8d](https://github.com/taufikdev88/simplewhatsappapi/commit/03500e8d2502ef4af9cf1e1374b2ce1e81108461))
+*  get count request otp by range date ([fd044435](https://github.com/taufikdev88/simplewhatsappapi/commit/fd044435b6791ebc42e320fbd1d00c2ce95d14f1))
+*  add validated otp log & add attr cs at otp ([f49d3919](https://github.com/taufikdev88/simplewhatsappapi/commit/f49d391953f6e20238f2a493dd1f59f3bfecf1eb))
+
 #### 2.2.0 (2023-10-10)
 
 ##### Bug Fixes
