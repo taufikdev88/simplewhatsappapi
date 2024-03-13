@@ -1,3 +1,13 @@
+#### 2.3.1 (2024-03-13)
+
+##### Continuous Integration
+
+*  improve build performance ([91e63b0d](https://github.com/taufikdev88/simplewhatsappapi/commit/91e63b0d7a14f8716ad28dd17c75828684238d5b))
+
+##### Code Style Changes
+
+*  update documentation for multi-arch support ([9eede6dc](https://github.com/taufikdev88/simplewhatsappapi/commit/9eede6dcd857b9f8fc4a68cd9d509c837e123227))
+
 #### 2.3.0 (2023-10-13)
 
 ##### Build System / Dependencies
