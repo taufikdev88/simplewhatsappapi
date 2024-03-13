@@ -36,6 +36,20 @@ TO DO
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See [deployment](#deployment) for notes on how to deploy the project on a live system.
 
+### Development
+Build docker image for multi platform
+
+- Create new builder if it doesn't exist yet
+```bash
+#!/bin/bash
+docker buildx create --name mybuilder --use --bootstrap
+```
+- Trigger the build using buildx for multi-arch
+```bash
+#!/bin/bash
+docker buildx build --platform linux/amd64,linux/arm64 -t docker-image-name:tag-version --push .
+```
+
 ### Prerequisites
 
 You will need Docker Installed on your computer. Please take a look on the get started section.
